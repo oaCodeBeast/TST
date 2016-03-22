@@ -1,0 +1,96 @@
+﻿@model TST.DAL.TSTTicket
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>TSTTicket</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TicketSubject)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TicketSubject)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TicketDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TicketDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TicketSubmitted)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TicketSubmitted)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TicketResolved)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TicketResolved)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Image)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Image)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TSTEmployee.EmpFname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TSTEmployee.EmpFname)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TSTEmployee1.EmpFname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TSTEmployee1.EmpFname)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TSTPriorite.PriorityName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TSTPriorite.PriorityName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TSTTicketStatus.TicketStatusName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TSTTicketStatus.TicketStatusName)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

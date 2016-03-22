@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Greendale Community Portal</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <style type='text/css'>
+        ul.nav li.dropdown:hover ul.dropdown-menu {
+            display: block;
+        }
+    </style>
+    @RenderSection("styles", required: false)
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                
+                @Html.ActionLink("Greendale Community Portal", "Index", "Home", null, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+
+                    @if (Request.IsAuthenticated && User.IsInRole("Admin") || User.IsInRole("Tech"))
+                    {
+                        <li class="dropdown">
+                            <a href="@Url.Action("Index","TSTTickets")">Tickets <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                @* Tech and admin *@
+                                <li>@Html.ActionLink("Ticket Statuses", "Index", "TSTTicketStatus")</li>
+                                <li>@Html.ActionLink("Priority Statuses", "Index", "TSTPriorites")</li>
+                            </ul>
+                        </li>
+                    }
+                    else
+                    {
+                        //Change to just be user's submited tickets
+                        <li>@Html.ActionLink("Tickets", "Index", "TSTTickets")</li>
+                    }
+                    @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <li class="dropdown">
+                            <a href="@Url.Action("Index", "TSTEmployees")">All users <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                @* Admin only *@
+                                <li>@Html.ActionLink("User Statuses", "Index", "TSTEmployeeStatus")</li>
+                                <li>@Html.ActionLink("User Departments", "Index", "TSTDepartments")</li>
+                            </ul>
+                        </li>
+                    }
+                    else if (Request.IsAuthenticated && User.IsInRole("Teacher"))
+                    {
+                        <li>@Html.ActionLink("All Users", "Index", "TSTEmployees")</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("Staff", "IndexFaculty", "TSTEmployees")</li>
+                    }
+
+
+                
+
+
+
+
+
+
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+
+                    @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+                    {<li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin Menu <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li>@Html.ActionLink("RolesAdmin", "Index", "RolesAdmin")</li>
+                        <li>@Html.ActionLink("UsersAdmin", "Index", "UsersAdmin")</li>
+                    </ul>
+                    </li>
+                     
+                    }
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Omar Abdulaziz</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

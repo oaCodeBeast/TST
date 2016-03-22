@@ -1,0 +1,203 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+    
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+/* styles for validation helpers */
+.field-validation-error {
+    color: #b94a48;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #b94a48;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: #b94a48;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+/*Nav stuff*/
+.navbar-inverse {
+    background-color: #0A0A38;
+}
+
+    .navbar-inverse .navbar-brand, .navbar-inverse .navbar-nav > li > a {
+        color: #D6D6D6;
+    }
+
+    .navbar-nav > li > a {
+            padding-top: 15px;
+    padding-bottom: 11px;
+    }
+    .navbar-nav > li > a:hover{
+        transition:.2s;
+        border-bottom:4px solid #2A4DA8;
+    }
+/*Home page stuff*/
+.home-header {
+    background-color:#fff;
+    padding: 20px 60px;
+    margin: 0 auto;
+}
+
+.logo {
+    width: 125px;
+    margin-right: 20px;
+}
+
+.home-header a {
+    background-color: #2A4DA8;
+    color: #D6D6D6;
+    margin-top: 70px;
+    margin-right: 200px;
+    width: 140px;
+    font-size: 1.4em;
+}
+
+    .home-header a:hover {
+        transition:.8s;
+        background-color: #000050;
+        color: #D6D6D6;
+        margin-right:175px;
+    }
+    
+
+    .home-header a span {
+        content: " ";
+        display: inline-block;
+        top: 4px;
+        right: -4px;
+        position: relative;
+        vertical-align: middle;
+        border: 6px solid transparent;
+        border: 6px solid rgba(0,0,0,0);
+        border-left: 8px solid #87a5c1;
+        -webkit-transition: all 0.2s ease-in-out;
+        transition: all 0.2s ease-in-out;
+        -webkit-transform: scale(0.98) translateY(-50%);
+        -ms-transform: scale(0.98) translateY(-50%);
+        transform: scale(0.98) translateY(-50%);
+    }
+
+.name h2 {
+    margin-bottom: 0px;
+}
+
+.name h3 {
+    margin-top: 0px;
+    margin-left: 2px;
+}
+
+.name p {
+    font-style: italic;
+    margin-top: -5px;
+    margin-left: 137px;
+}
+
+.home-image {
+    background: url(Images/Biology_classroom.png) 0% 23% no-repeat;
+    height: 450px;
+      border-bottom:solid 1px #818181;
+}
+
+footer {
+    text-align: center;
+}
+
+.second-nav {
+    width: 100%;
+    height: 50px;
+    background-color: rgba(42, 77, 168, .65);
+}
+
+    .second-nav ul {
+        list-style: none;
+        font-size: 1.3em;
+        color: aliceblue;
+        width: 95%;
+        margin: 0 auto;
+    }
+
+        .second-nav ul li {
+            width: 20%;
+            float: left;
+            text-align: center;
+            padding: 13px;
+        }
+
+            .second-nav ul li a {
+                color: aliceblue;
+            }
+
+                .second-nav ul li a:hover {
+                    transition: .5s;
+                    background-color: rgba(10,10,56, .85);
+                    padding: 10px;
+                    /*margin: 2px 0;*/
+                    text-decoration: none;
+                    margin-left:10px;
+                }
+
+.image-text {
+    background-color: rgba(42, 77, 168, .65);
+   
+    margin-top: 95px;
+    margin-left: 50px;
+    padding: 25px;
+    width:475px;
+  
+}
+.image-text .title a{
+    margin:9px;
+    font-size:2.4em;
+    color:antiquewhite;
+}
+
+.image-text .title a:hover, .image-text.title a:focus{
+    transition: .8s;
+    color:rgb(252, 255, 5);
+    text-decoration:none!important;
+    padding: 10px 20px 10px 30px;
+    margin-left: 50px;
+    background-color: rgba(10,10,56, .85);
+}
+.documentation{
+   
+}
+.documentation article{
+    text-align:center;
+    background-color:#fff;
+    border-top:solid 1px #D6D6D6;
+    border-left:solid 1px #D6D6D6;
+    border-bottom:solid 1px #818181;
+    border-right:solid 1px #818181;
+    
+}
+.documentation p {
+    margin-bottom:20px;
+}

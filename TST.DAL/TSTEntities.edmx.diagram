@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="1743daeba8ff413a8f36f015265f6876" Name="Diagram1">
+        <EntityTypeShape EntityType="TSTModel.TSTChatroom" Width="1.5" PointX="5.25" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="TSTModel.TSTCourseDepartment" Width="1.5" PointX="0.5" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TSTModel.TSTCourseInstance" Width="1.5" PointX="0.5" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TSTModel.TSTCours" Width="1.5" PointX="0.5" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TSTModel.TSTCourseStatus" Width="1.5" PointX="0.5" PointY="11.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TSTModel.TSTDepartment" Width="1.5" PointX="5.875" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TSTModel.TSTEmployee" Width="1.5" PointX="4" PointY="6.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TSTModel.TSTEmployeeStatus" Width="1.5" PointX="7.625" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TSTModel.TSTMessage" Width="1.5" PointX="8.875" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TSTModel.TSTPriorite" Width="1.5" PointX="5.875" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="TSTModel.TSTTechNote" Width="1.5" PointX="9.5" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="TSTModel.TSTTicket" Width="1.5" PointX="11.25" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TSTModel.TSTTicketStatus" Width="1.5" PointX="7.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TSTModel.TSTStudents_Courses" Width="1.5" PointX="2.25" PointY="8.125" IsExpanded="true" />
+        <AssociationConnector Association="TSTModel.FK_TSTCourses_TSTCourseDepartments1" ManuallyRouted="false" />
+        <AssociationConnector Association="TSTModel.FK_TSTCourseInstances_TSTCourses" ManuallyRouted="false" />
+        <AssociationConnector Association="TSTModel.FK_TSTCourseInstances_TSTCourseStatuses" ManuallyRouted="false" />
+        <AssociationConnector Association="TSTModel.FK_TSTCourseInstances_TSTEmployees" ManuallyRouted="false" />
+        <AssociationConnector Association="TSTModel.FK_TSTStudents_Courses_TSTCourseInstances1" ManuallyRouted="false" />
+        <AssociationConnector Association="TSTModel.FK_TSTEmployees_TSTDepartments" ManuallyRouted="false" />
+        <AssociationConnector Association="TSTModel.FK_TSTEmployees_TSTEmployeeStatuses" ManuallyRouted="false" />
+        <AssociationConnector Association="TSTModel.FK_TSTMessages_TSTEmployees" ManuallyRouted="false" />
+        <AssociationConnector Association="TSTModel.FK_TSTStudents_Courses_TSTEmployees" ManuallyRouted="false" />
+        <AssociationConnector Association="TSTModel.FK_TSTTechNotes_TSTEmployees" ManuallyRouted="false" />
+        <AssociationConnector Association="TSTModel.FK_TSTTickets_TSTEmployees" ManuallyRouted="false" />
+        <AssociationConnector Association="TSTModel.FK_TSTTickets_TSTEmployees1" ManuallyRouted="false" />
+        <AssociationConnector Association="TSTModel.FK_TSTTickets_TSTPriorites" ManuallyRouted="false" />
+        <AssociationConnector Association="TSTModel.FK_TSTTechNotes_TSTTickets" ManuallyRouted="false" />
+        <AssociationConnector Association="TSTModel.FK_TSTTickets_TSTTicketStatuses" ManuallyRouted="false" />
+        <AssociationConnector Association="TSTModel.TSTChatrooms_Messages" ManuallyRouted="false" />
+        <AssociationConnector Association="TSTModel.TSTChatrooms_Users" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
