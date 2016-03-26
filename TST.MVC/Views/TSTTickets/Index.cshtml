@@ -3,79 +3,93 @@
 @{
     ViewBag.Title = "Index";
 }
+@section styles{
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/t/bs/dt-1.10.11,af-2.1.1,b-1.1.2,fh-3.1.1,kt-2.1.1,r-2.0.2,se-1.1.2/datatables.min.css" />
 
+    }
 <h2>Index</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.TicketSubject)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TicketDescription)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TicketSubmitted)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TicketResolved)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Image)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TSTEmployee.EmpFname)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TSTEmployee1.EmpFname)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TSTPriorite.PriorityName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TSTTicketStatus.TicketStatusName)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.TicketSubject)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TicketDescription)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TicketSubmitted)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TicketResolved)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Image)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TSTEmployee.EmpFname)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TSTEmployee1.EmpFname)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TSTPriorite.PriorityName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TSTTicketStatus.TicketStatusName)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.TicketID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.TicketID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.TicketID })
-        </td>
-    </tr>
-}
-
+<table id="tbTickets" class="table" >
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TicketSubject)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TicketDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TicketSubmitted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TicketResolved)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TSTEmployee.EmpFname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TSTEmployee1.EmpFname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TSTPriorite.PriorityName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TSTTicketStatus.TicketStatusName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TicketSubject)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TicketDescription)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TicketSubmitted)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TicketResolved)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Image)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TSTEmployee.EmpFname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TSTEmployee1.EmpFname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TSTPriorite.PriorityName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TSTTicketStatus.TicketStatusName)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.TicketID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.TicketID })
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
+
+@section Scripts{
+    <script>$(document).ready(function () {
+    $('#tbTickets').DataTable({
+        colReorder: true,
+        keys: true
+    });
+});</script>
+    } 

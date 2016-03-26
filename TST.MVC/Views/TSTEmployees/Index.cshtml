@@ -1,123 +1,732 @@
 ﻿@model IEnumerable<TST.DAL.TSTEmployee>
 
+@* Linq Statements for sorting/filtering *@
+@{ 
+    var activeEmployees = Model.Where(e => e.DepartmentID != 6).Where(e => e.EmpStatusID == 1).OrderBy(e => e.DepartmentID);
+    var inactiveEmployees = Model.Where(e => e.DepartmentID != 6).Where(e => e.EmpStatusID != 1).OrderBy(e => e.DepartmentID);
+    var activeStudents = Model.Where(e => e.DepartmentID == 6).Where(e => e.EmpStatusID == 2).OrderBy(e => e.EmpLname);
+    var inactiveStudents = Model.Where(e => e.DepartmentID == 6).Where(e => e.EmpStatusID != 2).OrderBy(e => e.EmpLname);
+}
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "All Users";
 }
 
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.EmpFname)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EmpLname)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EmpAddress1)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EmpAddress2)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EmpCity)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EmpState)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EmpPhoto)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EmpUserID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EmpDateOfBirth)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EmpDateOfHire)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EmpEndDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EmpPhone)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EmpEmail)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EmpNotes)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TSTDepartment.DepartmentName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TSTEmployeeStatus.EmpStatusName)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmpFname)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmpLname)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmpAddress1)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmpAddress2)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmpCity)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmpState)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmpPhoto)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmpUserID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmpDateOfBirth)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmpDateOfHire)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmpEndDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmpPhone)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmpEmail)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmpNotes)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TSTDepartment.DepartmentName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.EmpID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.EmpID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.EmpID })
-        </td>
-    </tr>
+<div class="container emps-wrapper">
+    <ul class="nav nav-tabs emps-nav">
+@if (Request.IsAuthenticated && User.IsInRole("Admin"))
+{
+        @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-default " })
+        <li role="presentation" class="active"><a href="#1" data-toggle="tab">Active Employees</a></li>
+        <li role="presentation"><a href="#2" data-toggle="tab">Inactive Employees</a></li>
+        <li role="presentation"><a href="#3" data-toggle="tab">Active Students</a></li>
+        <li role="presentation"><a href="#4" data-toggle="tab">Inactive Students</a></li>
+}
+else if (Request.IsAuthenticated && User.IsInRole("Teacher"))
+{
+    <li role="presentation" class="active"><a href="#1" data-toggle="tab">Active Employees</a></li>
+    <li role="presentation"><a href="#3" data-toggle="tab">Active Students</a></li>
+}
+else if (Request.IsAuthenticated && User.IsInRole("HR"))
+{
+    <li role="presentation" class="active"><a href="#1" data-toggle="tab">Active Employees</a></li>
+    <li role="presentation"><a href="#2" data-toggle="tab">Inactive Employees</a></li>
+}
+else
+{
+    <li role="presentation" class="active"><a href="#1" data-toggle="tab">Active Employees</a></li>
 }
 
-</table>
+    </ul>
+
+    <div class="tab-content emps-secondary-wrapper">
+        <div class="tab-pane active" id="1">
+       
+
+
+                @foreach (var item in activeEmployees)
+                {
+
+                    <div class="col-md-4 emp-listing">
+                        <div class="emp-index-image">
+                            <a href="@Url.Action("Details",new { id=item.EmpID })">
+                                <img class="img-circle empimg" src="~/Content/TSTUserImages/@Html.DisplayFor(modelItem => item.EmpPhoto)" />
+                            </a>
+                        </div>
+                        <div class="emp-info">
+                            <a href="@Url.Action("Details",new { id=item.EmpID })">
+                                <h2 class="text-center">@Html.DisplayFor(modelItem => item.GetFullName)</h2>
+                            </a>
+                            <div class="emprole">
+                                @* Student role *@
+                                @if (item.DepartmentID == 6)
+                                {
+
+                                    if (item.EmpStatusID == 2)
+                                    {
+                                <h4>Student</h4>
+                                <p>
+                                    @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) since
+                                    @Html.DisplayFor(modelItem => item.EmpDateOfHire).
+                                </p>
+                                    }
+                                    else if (item.EmpStatusID == 4)
+                                    {
+                                <h4>Ex-Student</h4>
+                                <p>
+                                    Was @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                    @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                </p>
+                                    }
+                                    else if (item.EmpStatusID == 6)
+                                    {
+                                <h4>Dropout</h4>
+                                <p>
+                                    @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                    @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                </p>
+                                    }
+                                }
+                                @* Teacher *@
+                                @if (item.DepartmentID == 4)
+                                {
+
+                                    if (item.EmpStatusID == 1)
+                                    {
+                                <h4>Instructor</h4>
+                                <p>
+                                    @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) since
+                                    @Html.DisplayFor(modelItem => item.EmpDateOfHire).
+                                </p>
+                                    }
+                                    else if (item.EmpStatusID == 3)
+                                    {
+                                <h4>Ex-Instructor</h4>
+                                <p>
+                                    @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                    @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                </p>
+                                    }
+                                    else if (item.EmpStatusID == 5)
+                                    {
+                                <h4>Retired Instructor</h4>
+                                <p>
+                                    @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                    @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                </p>
+                                    }
+                                }
+                                @* Tech *@
+                                @if (item.DepartmentID == 3)
+                                {
+
+                                    if (item.EmpStatusID == 1)
+                                    {
+                                <h4>Technician</h4>
+                                <p>
+                                    @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) since
+                                    @Html.DisplayFor(modelItem => item.EmpDateOfHire).
+                                </p>
+                                    }
+                                    else if (item.EmpStatusID == 3)
+                                    {
+                                <h4>Ex-Technician</h4>
+                                <p>
+                                    @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                    @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                </p>
+                                    }
+                                    else if (item.EmpStatusID == 5)
+                                    {
+                                <h4>Retired Technician</h4>
+                                <p>
+                                    @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                    @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                </p>
+                                    }
+                                }
+                                @* HR *@
+                                @if (item.DepartmentID == 5)
+                                {
+
+                                    if (item.EmpStatusID == 1)
+                                    {
+                                <h4>HR Representative</h4>
+                                <p>
+                                    @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) since
+                                    @Html.DisplayFor(modelItem => item.EmpDateOfHire).
+                                </p>
+                                    }
+                                    else if (item.EmpStatusID == 3)
+                                    {
+                                <h4>Ex-HR Rep</h4>
+                                <p>
+                                    @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                    @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                </p>
+                                    }
+                                    else if (item.EmpStatusID == 5)
+                                    {
+                                <h4>Retired HR Rep</h4>
+                                <p>
+                                    @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                    @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                </p>
+                                    }
+                                }
+                                @* Admin *@
+                                @if (item.DepartmentID == 1)
+                                {
+
+                                    if (item.EmpStatusID == 1)
+                                    {
+                                <h4>Administrator</h4>
+                                <p>
+                                    @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) since
+                                    @Html.DisplayFor(modelItem => item.EmpDateOfHire).
+                                </p>
+                                    }
+                                    else if (item.EmpStatusID == 3)
+                                    {
+                                <h4>Ex-Admin</h4>
+                                <p>
+                                    @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                    @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                </p>
+                                    }
+                                    else if (item.EmpStatusID == 5)
+                                    {
+                                <h4>Retired Admin</h4>
+                                <p>
+                                    @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                    @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                </p>
+                                    }
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                }
+            </div>
+        <div class="tab-pane" id="2">
+
+
+
+            @foreach (var item in inactiveEmployees)
+            {
+
+                <div class="col-md-4 emp-listing">
+                    <div class="emp-index-image">
+                        <a href="@Url.Action("Details",new { id=item.EmpID })">
+                            <img class="img-circle empimg" src="~/Content/TSTUserImages/@Html.DisplayFor(modelItem => item.EmpPhoto)" />
+                        </a>
+                    </div>
+                    <div class="emp-info">
+                        <a href="@Url.Action("Details",new { id=item.EmpID })">
+                            <h2 class="text-center">@Html.DisplayFor(modelItem => item.GetFullName)</h2>
+                        </a>
+                        <div class="emprole">
+                            @* Student role *@
+                            @if (item.DepartmentID == 6)
+                            {
+
+                                if (item.EmpStatusID == 2)
+                                {
+                                    <h4>Student</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) since
+                                        @Html.DisplayFor(modelItem => item.EmpDateOfHire).
+                                    </p>
+                                }
+                                else if (item.EmpStatusID == 4)
+                                {
+                                    <h4>Ex-Student</h4>
+                                    <p>
+                                        Was @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                        @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                    </p>
+                                }
+                                else if (item.EmpStatusID == 6)
+                                {
+                                    <h4>Dropout</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                        @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                    </p>
+                                }
+                            }
+                            @* Teacher *@
+                            @if (item.DepartmentID == 4)
+                            {
+
+                                if (item.EmpStatusID == 1)
+                                {
+                                    <h4>Instructor</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) since
+                                        @Html.DisplayFor(modelItem => item.EmpDateOfHire).
+                                    </p>
+                                }
+                                else if (item.EmpStatusID == 3)
+                                {
+                                    <h4>Ex-Instructor</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                        @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                    </p>
+                                }
+                                else if (item.EmpStatusID == 5)
+                                {
+                                    <h4>Retired Instructor</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                        @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                    </p>
+                                }
+                            }
+                            @* Tech *@
+                            @if (item.DepartmentID == 3)
+                            {
+
+                                if (item.EmpStatusID == 1)
+                                {
+                                    <h4>Technician</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) since
+                                        @Html.DisplayFor(modelItem => item.EmpDateOfHire).
+                                    </p>
+                                }
+                                else if (item.EmpStatusID == 3)
+                                {
+                                    <h4>Ex-Technician</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                        @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                    </p>
+                                }
+                                else if (item.EmpStatusID == 5)
+                                {
+                                    <h4>Retired Technician</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                        @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                    </p>
+                                }
+                            }
+                            @* HR *@
+                            @if (item.DepartmentID == 5)
+                            {
+
+                                if (item.EmpStatusID == 1)
+                                {
+                                    <h4>HR Representative</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) since
+                                        @Html.DisplayFor(modelItem => item.EmpDateOfHire).
+                                    </p>
+                                }
+                                else if (item.EmpStatusID == 3)
+                                {
+                                    <h4>Ex-HR Rep</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                        @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                    </p>
+                                }
+                                else if (item.EmpStatusID == 5)
+                                {
+                                    <h4>Retired HR Rep</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                        @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                    </p>
+                                }
+                            }
+                            @* Admin *@
+                            @if (item.DepartmentID == 1)
+                            {
+
+                                if (item.EmpStatusID == 1)
+                                {
+                                    <h4>Administrator</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) since
+                                        @Html.DisplayFor(modelItem => item.EmpDateOfHire).
+                                    </p>
+                                }
+                                else if (item.EmpStatusID == 3)
+                                {
+                                    <h4>Ex-Admin</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                        @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                    </p>
+                                }
+                                else if (item.EmpStatusID == 5)
+                                {
+                                    <h4>Retired Admin</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                        @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                    </p>
+                                }
+                            }
+
+                        </div>
+                    </div>
+                </div>
+
+
+            }
+        </div>
+        <div class="tab-pane" id="3">
+
+
+
+            @foreach (var item in activeStudents)
+            {
+
+                <div class="col-md-4 emp-listing">
+                    <div class="emp-index-image">
+                        <a href="@Url.Action("Details",new { id=item.EmpID })">
+                            <img class="img-circle empimg" src="~/Content/TSTUserImages/@Html.DisplayFor(modelItem => item.EmpPhoto)" />
+                        </a>
+                    </div>
+                    <div class="emp-info">
+                        <a href="@Url.Action("Details",new { id=item.EmpID })">
+                            <h2 class="text-center">@Html.DisplayFor(modelItem => item.GetFullName)</h2>
+                        </a>
+                        <div class="emprole">
+                            @* Student role *@
+                            @if (item.DepartmentID == 6)
+                            {
+
+                                if (item.EmpStatusID == 2)
+                                {
+                                    <h4>Student</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) since
+                                        @Html.DisplayFor(modelItem => item.EmpDateOfHire).
+                                    </p>
+                                }
+                                else if (item.EmpStatusID == 4)
+                                {
+                                    <h4>Ex-Student</h4>
+                                    <p>
+                                        Was @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                        @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                    </p>
+                                }
+                                else if (item.EmpStatusID == 6)
+                                {
+                                    <h4>Dropout</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                        @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                    </p>
+                                }
+                            }
+                            @* Teacher *@
+                            @if (item.DepartmentID == 4)
+                            {
+
+                                if (item.EmpStatusID == 1)
+                                {
+                                    <h4>Instructor</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) since
+                                        @Html.DisplayFor(modelItem => item.EmpDateOfHire).
+                                    </p>
+                                }
+                                else if (item.EmpStatusID == 3)
+                                {
+                                    <h4>Ex-Instructor</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                        @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                    </p>
+                                }
+                                else if (item.EmpStatusID == 5)
+                                {
+                                    <h4>Retired Instructor</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                        @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                    </p>
+                                }
+                            }
+                            @* Tech *@
+                            @if (item.DepartmentID == 3)
+                            {
+
+                                if (item.EmpStatusID == 1)
+                                {
+                                    <h4>Technician</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) since
+                                        @Html.DisplayFor(modelItem => item.EmpDateOfHire).
+                                    </p>
+                                }
+                                else if (item.EmpStatusID == 3)
+                                {
+                                    <h4>Ex-Technician</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                        @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                    </p>
+                                }
+                                else if (item.EmpStatusID == 5)
+                                {
+                                    <h4>Retired Technician</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                        @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                    </p>
+                                }
+                            }
+                            @* HR *@
+                            @if (item.DepartmentID == 5)
+                            {
+
+                                if (item.EmpStatusID == 1)
+                                {
+                                    <h4>HR Representative</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) since
+                                        @Html.DisplayFor(modelItem => item.EmpDateOfHire).
+                                    </p>
+                                }
+                                else if (item.EmpStatusID == 3)
+                                {
+                                    <h4>Ex-HR Rep</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                        @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                    </p>
+                                }
+                                else if (item.EmpStatusID == 5)
+                                {
+                                    <h4>Retired HR Rep</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                        @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                    </p>
+                                }
+                            }
+                            @* Admin *@
+                            @if (item.DepartmentID == 1)
+                            {
+
+                                if (item.EmpStatusID == 1)
+                                {
+                                    <h4>Administrator</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) since
+                                        @Html.DisplayFor(modelItem => item.EmpDateOfHire).
+                                    </p>
+                                }
+                                else if (item.EmpStatusID == 3)
+                                {
+                                    <h4>Ex-Admin</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                        @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                    </p>
+                                }
+                                else if (item.EmpStatusID == 5)
+                                {
+                                    <h4>Retired Admin</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                        @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                    </p>
+                                }
+                            }
+
+                        </div>
+                    </div>
+                </div>
+
+
+            }
+        </div>
+
+        <div class="tab-pane" id="4">
+
+
+
+            @foreach (var item in inactiveStudents)
+            {
+
+                <div class="col-md-4 emp-listing">
+                    <div class="emp-index-image">
+                        <a href="@Url.Action("Details",new { id=item.EmpID })">
+                            <img class="img-circle empimg" src="~/Content/TSTUserImages/@Html.DisplayFor(modelItem => item.EmpPhoto)" />
+                        </a>
+                    </div>
+                    <div class="emp-info">
+                        <a href="@Url.Action("Details",new { id=item.EmpID })">
+                            <h2 class="text-center">@Html.DisplayFor(modelItem => item.GetFullName)</h2>
+                        </a>
+                        <div class="emprole">
+                            @* Student role *@
+                            @if (item.DepartmentID == 6)
+                            {
+
+                                if (item.EmpStatusID == 2)
+                                {
+                                    <h4>Student</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) since
+                                        @Html.DisplayFor(modelItem => item.EmpDateOfHire).
+                                    </p>
+                                }
+                                else if (item.EmpStatusID == 4)
+                                {
+                                    <h4>Ex-Student</h4>
+                                    <p>
+                                        Was @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                        @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                    </p>
+                                }
+                                else if (item.EmpStatusID == 6)
+                                {
+                                    <h4>Dropout</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                        @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                    </p>
+                                }
+                            }
+                            @* Teacher *@
+                            @if (item.DepartmentID == 4)
+                            {
+
+                                if (item.EmpStatusID == 1)
+                                {
+                                    <h4>Instructor</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) since
+                                        @Html.DisplayFor(modelItem => item.EmpDateOfHire).
+                                    </p>
+                                }
+                                else if (item.EmpStatusID == 3)
+                                {
+                                    <h4>Ex-Instructor</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                        @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                    </p>
+                                }
+                                else if (item.EmpStatusID == 5)
+                                {
+                                    <h4>Retired Instructor</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                        @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                    </p>
+                                }
+                            }
+                            @* Tech *@
+                            @if (item.DepartmentID == 3)
+                            {
+
+                                if (item.EmpStatusID == 1)
+                                {
+                                    <h4>Technician</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) since
+                                        @Html.DisplayFor(modelItem => item.EmpDateOfHire).
+                                    </p>
+                                }
+                                else if (item.EmpStatusID == 3)
+                                {
+                                    <h4>Ex-Technician</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                        @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                    </p>
+                                }
+                                else if (item.EmpStatusID == 5)
+                                {
+                                    <h4>Retired Technician</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                        @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                    </p>
+                                }
+                            }
+                            @* HR *@
+                            @if (item.DepartmentID == 5)
+                            {
+
+                                if (item.EmpStatusID == 1)
+                                {
+                                    <h4>HR Representative</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) since
+                                        @Html.DisplayFor(modelItem => item.EmpDateOfHire).
+                                    </p>
+                                }
+                                else if (item.EmpStatusID == 3)
+                                {
+                                    <h4>Ex-HR Rep</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                        @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                    </p>
+                                }
+                                else if (item.EmpStatusID == 5)
+                                {
+                                    <h4>Retired HR Rep</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                        @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                    </p>
+                                }
+                            }
+                            @* Admin *@
+                            @if (item.DepartmentID == 1)
+                            {
+
+                                if (item.EmpStatusID == 1)
+                                {
+                                    <h4>Administrator</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) since
+                                        @Html.DisplayFor(modelItem => item.EmpDateOfHire).
+                                    </p>
+                                }
+                                else if (item.EmpStatusID == 3)
+                                {
+                                    <h4>Ex-Admin</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                        @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                    </p>
+                                }
+                                else if (item.EmpStatusID == 5)
+                                {
+                                    <h4>Retired Admin</h4>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.TSTEmployeeStatus.EmpStatusName) on
+                                        @Html.DisplayFor(modelItem => item.EmpEndDate).
+                                    </p>
+                                }
+                            }
+
+                        </div>
+                    </div>
+                </div>
+
+
+            }
+        </div>
+
+            <div class="clearfix"></div>
+        </div>
+
+
+    </div>

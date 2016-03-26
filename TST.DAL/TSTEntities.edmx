@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="TSTModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="TSTModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="TSTChatrooms">
           <Key>
             <PropertyRef Name="ChatroomID" />
@@ -97,7 +97,7 @@ warning 6002: The table/view 'TST.dbo.TSTChatrooms_Users' does not have a primar
           <Property Name="EmpUserID" Type="nvarchar" MaxLength="100" />
           <Property Name="EmpDateOfBirth" Type="datetime" Nullable="false" />
           <Property Name="EmpDateOfHire" Type="datetime" Nullable="false" />
-          <Property Name="EmpEndDate" Type="nchar" MaxLength="10" />
+          <Property Name="EmpEndDate" Type="datetime" />
           <Property Name="EmpPhone" Type="nvarchar" MaxLength="15" Nullable="false" />
           <Property Name="EmpEmail" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="EmpNotes" Type="nvarchar(max)" />
@@ -512,7 +512,8 @@ warning 6002: The table/view 'TST.dbo.TSTStudents_Courses' does not have a prima
             <End Role="TSTTickets" EntitySet="TSTTickets" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="TSTModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -599,7 +600,7 @@ warning 6002: The table/view 'TST.dbo.TSTStudents_Courses' does not have a prima
           <Property Name="EmpUserID" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="EmpDateOfBirth" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="EmpDateOfHire" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="EmpEndDate" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="EmpEndDate" Type="DateTime" Precision="3" />
           <Property Name="EmpPhone" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="EmpEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="EmpNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />

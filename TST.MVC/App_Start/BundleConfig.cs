@@ -20,11 +20,16 @@ namespace IdentitySample
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
+                      "~/Scripts/respond.js",
+                      "~/Scripts/jquery-ui-1.11.4.js",
+                      "~/Scripts/croppic.js",
+                      "~/Scripts/main.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/croppic.css",
+                      "~/Content/font-awesome.css"));
         }
     }
 }

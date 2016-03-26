@@ -1,16 +1,42 @@
 ﻿@using Microsoft.AspNet.Identity
+@using TST.DAL
 @if (Request.IsAuthenticated) {
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" })) {
         @Html.AntiForgeryToken()
+        //get db
+        TSTEntities db = new TSTEntities();
+        var currentUserId = User.Identity.GetUserId();
 
+        //create user employee relationship by matching user id to user id of employee
+
+        TSTEmployee e = db.TSTEmployees.FirstOrDefault(x => x.EmpUserID == currentUserId);
+        <a href="@Url.Action("Details", "TSTEmployees",  new { id = e.EmpID })">
+            <img src="~/Content/TSTUserImages/@e.EmpPhoto" id="navPic" class="loggedinpic" />
+        </a>
         <ul class="nav navbar-nav navbar-right">
-            <li>
-                @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+      
+                @if (User.IsInRole("Admin"))
+                {
+            <li class="dropdown">
+                @*@Html.ActionLink("Hello " + User.Identity.GetUserName() + "!" + , "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })*@
+                <a href="@Url.Action("Index", "Manage", routeValues: null)" title="Manage">Hello @e.GetFullName! &nbsp;<span class="caret"></span> </a>
+                <ul class="dropdown-menu">
+                    <li>@Html.ActionLink("Roles", "Index", "RolesAdmin")</li>
+                    <li>@Html.ActionLink("Users", "Index", "UsersAdmin")</li>
+                </ul>
             </li>
+
+                }
+                else{
+                    <li>
+                        @Html.ActionLink("Hello " + e.GetFullName + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+                </li>
+                }
+
             <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
         </ul>
     }
-}
+}   
 else {
     <ul class="nav navbar-nav navbar-right">
         <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>

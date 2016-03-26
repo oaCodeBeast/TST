@@ -1,9 +1,22 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNet.Identity
+@using TST.DAL
+
+@{    //get db
+    TSTEntities db = new TSTEntities();
+    var currentUserId = User.Identity.GetUserId();
+
+    //create user employee relationship by matching user id to user id of employee
+
+    TSTEmployee e = db.TSTEmployees.FirstOrDefault(x => x.EmpUserID == currentUserId);}
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Greendale Community Portal</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"> 
+
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <style type='text/css'>
@@ -14,6 +27,7 @@
     @RenderSection("styles", required: false)
 </head>
 <body>
+ 
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -39,11 +53,34 @@
                                 <li>@Html.ActionLink("Priority Statuses", "Index", "TSTPriorites")</li>
                             </ul>
                         </li>
+                        if (User.IsInRole("Tech"))
+                        {
+                            <li>@Html.ActionLink("Staff", "Index", "TSTEmployees")</li>
+                        }
                     }
                     else
                     {
+                        if (Request.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                            <li class="dropdown">
+                                <a href="@Url.Action("Index", "TSTEmployees")">All users <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    @* Admin only *@
+                                    <li>@Html.ActionLink("User Statuses", "Index", "TSTEmployeeStatus")</li>
+                                    <li>@Html.ActionLink("User Departments", "Index", "TSTDepartments")</li>
+                                </ul>
+                            </li>
+                        }
+                        else if (Request.IsAuthenticated && User.IsInRole("Teacher"))
+                        {
+                            <li>@Html.ActionLink("Users", "Index", "TSTEmployees")</li>
+                        }
+                        else
+                        {
+                            <li>@Html.ActionLink("Staff", "Index", "TSTEmployees")</li>
+                        }
                         //Change to just be user's submited tickets
-                        <li>@Html.ActionLink("Tickets", "Index", "TSTTickets")</li>
+                        <li>@Html.ActionLink("Support", "Index", "TSTTickets")</li>
                     }
                     @if (Request.IsAuthenticated && User.IsInRole("Admin"))
                     {
@@ -56,14 +93,7 @@
                             </ul>
                         </li>
                     }
-                    else if (Request.IsAuthenticated && User.IsInRole("Teacher"))
-                    {
-                        <li>@Html.ActionLink("All Users", "Index", "TSTEmployees")</li>
-                    }
-                    else
-                    {
-                        <li>@Html.ActionLink("Staff", "IndexFaculty", "TSTEmployees")</li>
-                    }
+                
 
 
                 
@@ -75,16 +105,7 @@
 
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
 
-                    @if (Request.IsAuthenticated && User.IsInRole("Admin"))
-                    {<li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin Menu <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li>@Html.ActionLink("RolesAdmin", "Index", "RolesAdmin")</li>
-                        <li>@Html.ActionLink("UsersAdmin", "Index", "UsersAdmin")</li>
-                    </ul>
-                    </li>
-                     
-                    }
+               
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
@@ -97,9 +118,10 @@
             <p>&copy; @DateTime.Now.Year - Omar Abdulaziz</p>
         </footer>
     </div>
-
+    @RenderSection("modals", required: false)
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+    <script type="text/javascript" src="https://cdn.datatables.net/t/dt/dt-1.10.11,af-2.1.1,b-1.1.2,b-colvis-1.1.2,cr-1.3.1,fh-3.1.1,kt-2.1.1,r-2.0.2,rr-1.1.1,sc-1.4.1,se-1.1.2/datatables.min.js"></script>
+     @RenderSection("scripts", required: false)
 </body>
 </html>

@@ -58,22 +58,23 @@ namespace TST.DAL
 
         [Required(ErrorMessage = "* Required")]
         [Display(Name = "Date of Birth")]
-        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = false)]
+        [DisplayFormat(DataFormatString = "{0:dddd, MMMM d, yyyy}", ApplyFormatInEditMode = false)]
         public System.DateTime EmpDateOfBirth { get; set; }
 
         [Required(ErrorMessage = "* Required")]
         [Display(Name = "Date of Hire")]
-        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = false)]
+        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}", ApplyFormatInEditMode = false)]
         public System.DateTime EmpDateOfHire { get; set; }
-        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = false)]
+        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}", ApplyFormatInEditMode = false)]
         public string EmpEndDate { get; set; }
         [Display(Name = "Phone Number")]
         [Required(ErrorMessage = "* Required")]
+        
+        [DisplayFormat(DataFormatString = "{0:###-###-####}", ApplyFormatInEditMode = true)]
         public string EmpPhone { get; set; }
 
         [Required(ErrorMessage = "* Required")]
-        [Display(Name = "Email")]
-        [RegularExpression(@"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$", ErrorMessage = "* Email is invalid")]
+ 
         public string EmpEmail { get; set; }
         [Display(Name = "Notes")]
         [UIHint("MultilineText")]
@@ -84,7 +85,7 @@ namespace TST.DAL
     [MetadataType(typeof(TSTEmployeeMetaData))]
     public partial class TSTEmployee
     {
-        public string FullName
+        public string GetFullName
         {
             get
             {
@@ -92,6 +93,14 @@ namespace TST.DAL
 
             }
         }
+        public string GetCityState
+        {
+            get
+            {
+                return EmpCity + "," + EmpState;
+            }
+        }
+   
 
     }
     #endregion
@@ -154,7 +163,8 @@ namespace TST.DAL
         public int SubmittedByID { get; set; }
         //This will be in edit only
         public Nullable<int> TechID { get; set; }
-        //This will be programatically set when ticket is opened
+        //This will be programatically set when ticket is opened {0:MM/dd/yy H:mm:ss zzz}
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yy HH:mm}", ApplyFormatInEditMode = false)]
         public System.DateTime TicketSubmitted { get; set; }
         //This will be programatically set when ticket is resolved
         public Nullable<System.DateTime> TicketResolved { get; set; }

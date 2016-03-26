@@ -39,7 +39,7 @@ namespace TST.DAL
         public string EmpUserID { get; set; }
         public System.DateTime EmpDateOfBirth { get; set; }
         public System.DateTime EmpDateOfHire { get; set; }
-        public string EmpEndDate { get; set; }
+        public Nullable<System.DateTime> EmpEndDate { get; set; }
         public string EmpPhone { get; set; }
         public string EmpEmail { get; set; }
         public string EmpNotes { get; set; }
