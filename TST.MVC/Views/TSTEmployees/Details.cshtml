@@ -11,7 +11,7 @@
     //create user employee relationship by matching user id to user id of employee
 
     TSTEmployee e = db.TSTEmployees.FirstOrDefault(x => x.EmpUserID == currentUserId);
-    
+
     //var myTickets = ViewBag.PassMyTickets;
     //db.TSTTickets.Include(t => t.TSTEmployee).Include(t => t.TSTEmployee1)
     //    .Include(t => t.TSTPriorite).Include(t => t.TSTTicketStatus).Where(t => t.TSTEmployee.EmpID == id).Where(t => t.TicketStatusID != 4);
@@ -20,12 +20,13 @@
     //grab list of tickets
 
 
-    }
+}
 @section styles {
     <style>
         div.container.body-content {
             margin-top: 15px;
         }
+
         #employeePhoto {
             width: 250px;
             height: 250px;
@@ -34,588 +35,724 @@
             float: left;
         }
     </style>
-    }
+}
 
-    
+
 
 <div class="container emp-details-wrapper">
-    <div class="emp-det-basic col-md-5">
-        <div class="emp-det-basic-top text-center">
-            <h1>@Html.DisplayFor(model => model.GetFullName)</h1>
-            <img id="emp-photo" src="~/Content/TSTUserImages/@Html.DisplayFor(model => model.EmpPhoto)" />
-            @if (Request.IsAuthenticated && User.IsInRole("Admin") || Request.IsAuthenticated && Model.EmpUserID == currentUserId) {
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#imageModal">Change Picture?</button>}
+    @if (!Request.IsAuthenticated)
+    {
+
+        <div class="emp-det-basic col-md-8 col-md-offset-2">
+            <div class="emp-det-basic-top text-center">
+                <h1>@Html.DisplayFor(model => model.GetFullName)</h1>
+                <img id="emp-photo" src="~/Content/TSTUserImages/@Html.DisplayFor(model => model.EmpPhoto)" />
+                @*<input type="hidden" id="grabPic" name="grabPic" value="@ViewBag.PassImg" />
+                    <div name="employeePhoto" id="employeePhoto" />*@
 
 
-                        @*<input type="hidden" id="grabPic" name="grabPic" value="@ViewBag.PassImg" />
-                        <div name="employeePhoto" id="employeePhoto" />*@
-                  
-     
-        </div>
-        <div class="emp-det-basic-bottom">
-            <h4  class="emp-det-basic-header">Basic Info</h4>@Html.ActionLink("Edit Info", "Edit", new { id = Model.EmpID }, new { @class = "btn btn-primary pull-right" })
-            <span class="clearfix"></span>
-            <span class="emp-det-info-entry"><i class="fa fa-phone"></i>&nbsp;Phone: @Html.DisplayFor(model => model.EmpPhone)</span>
-            <span class="emp-det-info-entry"><i class="fa fa-envelope-o"></i>&nbsp;Email: @Html.DisplayFor(model => model.EmpEmail)</span>
-            <span class="emp-det-info-entry"><i class="fa fa-birthday-cake"></i>&nbsp;Born on @Html.DisplayFor(model => model.EmpDateOfBirth)</span>
-           
-            <!-- #region Crazy Logic -->
-
-
-            @if (Model.EmpStatusID == 1 || Model.EmpStatusID == 2)
-            {
-                if (Model.DepartmentID == 4)
-                {
-                    
-                    <span class="emp-det-info-entry"><i style ="margin-right: 1px; margin-left: 2px;" class="fa fa-university"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) Instructor since @Html.DisplayFor(model => model.EmpDateOfHire)</span>
-
-                }
-                if (Model.DepartmentID == 3)
-                {
-                
-                    <span class="emp-det-info-entry"><i class="fa fa-code"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) Technician since @Html.DisplayFor(model => model.EmpDateOfHire)</span>
-
-                }
-                if (Model.DepartmentID == 5)
-                {
-                
-                    <span class="emp-det-info-entry"><i class="fa fa-user"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) HR Rep since @Html.DisplayFor(model => model.EmpDateOfHire)</span>
-
-                }
-                if (Model.DepartmentID == 1)
-                {
-                    
-                    <span class="emp-det-info-entry"><i class="fa fa-briefcase"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) Administrator since @Html.DisplayFor(model => model.EmpDateOfHire)</span>
-
-                }
-                if (Model.DepartmentID == 6)
-                {
-                    
-                    <span class="emp-det-info-entry"><i class="fa fa-book"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) as a Student since @Html.DisplayFor(model => model.EmpDateOfHire)</span>
-
-                }
-            }
-            else
-            {
-                if (Model.DepartmentID == 4)
-                {
-                    if (Model.EmpStatusID == 3)
-                    {
-                       <span class="emp-det-info-entry"><i style="margin-right:2px;" class="fa fa-university"></i>Ex-Instructor, hired on: @Html.DisplayFor(model => model.EmpDateOfHire)</span>
-                       <span class="emp-det-info-entry"><i style="margin-left: 2px;margin-right: 1px;" class="fa fa-fire"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) on @Html.DisplayFor(model => model.EmpEndDate)</span>
-
-                    }
-                    if (Model.EmpStatusID == 5)
-                    {
-                        <span class="emp-det-info-entry"><i style="margin-right:2px;" class="fa fa-university"></i>Retired Instructor, hired on: @Html.DisplayFor(model => model.EmpDateOfHire)</span>
-                        <span class="emp-det-info-entry"><i style="margin-left: 2px;margin-right: 1px;" class="fa fa-glass"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) on @Html.DisplayFor(model => model.EmpEndDate)</span>
-
-                    }
-                }
-                if (Model.DepartmentID == 3)
-                {
-                    if (Model.EmpStatusID == 3)
-                    {
-                        <span class="emp-det-info-entry"><i style="margin-right:2px;" class="fa fa-user"></i>Ex-HR Rep, hired on: @Html.DisplayFor(model => model.EmpDateOfHire)</span>
-                        <span class="emp-det-info-entry"><i style="margin-left: 2px;margin-right: 1px;" class="fa fa-fire"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) on @Html.DisplayFor(model => model.EmpEndDate)</span>
-
-                    }
-                    if (Model.EmpStatusID == 5)
-                    {
-                        <span class="emp-det-info-entry"><i style="margin-right:2px;" class="fa fa-user"></i>Retired HR Rep, hired on: @Html.DisplayFor(model => model.EmpDateOfHire)</span>
-                        <span class="emp-det-info-entry"><i style="margin-left: 2px;margin-right: 1px;" class="fa fa-glass"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) on @Html.DisplayFor(model => model.EmpEndDate)</span>
-
-                    }
-                }
-                if (Model.DepartmentID == 5)
-                {
-                    if (Model.EmpStatusID == 3)
-                    {
-                        <span class="emp-det-info-entry"><i style="margin-right:2px;" class="fa fa-university"></i>Ex-Technician, hired on: @Html.DisplayFor(model => model.EmpDateOfHire)</span>
-                        <span class="emp-det-info-entry"><i style="margin-left: 2px;margin-right: 1px;" class="fa fa-fire"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) on @Html.DisplayFor(model => model.EmpEndDate)</span>
-
-                    }
-                    if (Model.EmpStatusID == 5)
-                    {
-                        <span class="emp-det-info-entry"><i style="margin-right:2px;" class="fa fa-university"></i>Retired Technician, hired on: @Html.DisplayFor(model => model.EmpDateOfHire)</span>
-                        <span class="emp-det-info-entry"><i style="margin-left: 2px;margin-right: 1px;" class="fa fa-glass"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) on @Html.DisplayFor(model => model.EmpEndDate)</span>
-
-                    }
-                }
-                if (Model.DepartmentID == 1)
-                {
-                    if (Model.EmpStatusID == 3)
-                    {
-                        <span class="emp-det-info-entry"><i style="margin-right:2px;" class="fa fa-university"></i>Ex-Administrator, hired on: @Html.DisplayFor(model => model.EmpDateOfHire)</span>
-                        <span class="emp-det-info-entry"><i style="margin-left: 2px;margin-right: 1px;" class="fa fa-fire"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) on @Html.DisplayFor(model => model.EmpEndDate)</span>
-
-                    }
-                    if (Model.EmpStatusID == 5)
-                    {
-                        <span class="emp-det-info-entry"><i style="margin-right:2px;" class="fa fa-university"></i>Retired Administrator, hired on: @Html.DisplayFor(model => model.EmpDateOfHire)</span>
-                        <span class="emp-det-info-entry"><i style="margin-left: 2px;margin-right: 1px;" class="fa fa-glass"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) on @Html.DisplayFor(model => model.EmpEndDate)</span>
-
-                    }
-                }
-                if (Model.DepartmentID == 6)
-                {
-                    if (Model.EmpStatusID == 4)
-                    {
-                        <span class="emp-det-info-entry"><i style="margin-right:2px;" class="fa fa-university"></i>Ex-Student, start date: @Html.DisplayFor(model => model.EmpDateOfHire)</span>
-                        <span class="emp-det-info-entry"><i style="margin-left: 2px;margin-right: 1px;" class="fa fa-exclamation"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) on @Html.DisplayFor(model => model.EmpEndDate)</span>
-
-                    }
-                    if (Model.EmpStatusID == 6)
-                    {
-                        <span class="emp-det-info-entry"><i style="margin-right:2px;" class="fa fa-university"></i>Dropout, start date: @Html.DisplayFor(model => model.EmpDateOfHire)</span>
-                        <span class="emp-det-info-entry"><i style="margin-left: 2px;margin-right: 1px;" class="fa fa-beer"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) on @Html.DisplayFor(model => model.EmpEndDate)</span>
-
-                    }
-                }
-
-            }
-            @if (Model.EmpCity != null || Model.EmpState != null)
-            {
-                <span class="emp-det-info-entry"><i style="margin-left: 3px; margin-right:4px;" class="fa fa-map-marker"></i>&nbsp;Lives in @Html.DisplayFor(model => model.GetCityState)</span>
-
-            }
-            <!-- #endregion -->
-        </div>
-        @if (Model.EmpNotes != null)
-        {
-            <div class="emp-det-basic-notes">
-                <h4 class="emp-det-basic-header">Notes</h4>
-                <div class="clearfix"></div>
-                <p>@Html.DisplayFor(model => model.EmpNotes)</p>
             </div>
-        }
-        @if(Model.DepartmentID == 6)
-        {
-            //add grades, shows total credits, and gpa
-        }
+            <div class="emp-det-basic-bottom">
+                <h4 class="emp-det-basic-header">Basic Info</h4>
+                @*&& User.IsInRole("Admin") || Request.IsAuthenticated && Model.EmpUserID == currentUserId || Request.IsAuthenticated && User.IsInRole("HR")*@
+            
+                <span class="clearfix"></span>
+                <span class="emp-det-info-entry"><i class="fa fa-phone"></i>&nbsp;Phone: @Html.DisplayFor(model => model.EmpPhone)</span>
+                <span class="emp-det-info-entry"><i class="fa fa-envelope-o"></i>&nbsp;Email: @Html.DisplayFor(model => model.EmpEmail)</span>
+                <span class="emp-det-info-entry"><i class="fa fa-birthday-cake"></i>&nbsp;Born on @Html.DisplayFor(model => model.EmpDateOfBirth)</span>
 
-    </div>
-    @* Conditional views based on user role/department *@
-    <div class="col-md-7 emp-det-conditional">
+                <!-- #region Crazy Logic -->
 
-            @if (Model.DepartmentID == 4)
-            {
-                //teacher view
 
-                //add courses employee is currently teaching
-
-            }
-            else if (Model.DepartmentID == 3)
-            {
-                //add tickets employee is currently working
-
-                //tech view
-
-            }
-            else if (Model.DepartmentID == 5)
-            {
-                //hr view
-
-            }
-            else if (Model.DepartmentID == 1)
-            {
-                //add all tickets, add all courses currently being taught
-
-                //admin view
-
-            }
-            else if (Model.DepartmentID == 6)
-            {
-                //add all courses student is in enrolled in
-                //student view
-
-            }
-        @if(Model.EmpUserID == currentUserId)
-        {
-
-     
-        if (myTickets.Any<TSTTicket>())
-        {
-            <div class="myTicketsWrapper" >
-                <h2 class="text-center">My Support Tickets</h2>
-
-                @foreach (var item in myTickets)
+                @if (Model.EmpStatusID == 1 || Model.EmpStatusID == 2)
                 {
-                    <div class="ticket-entry row" id="@Html.DisplayFor(modelItem => item.TicketID )">
-                        <div class="ticket-subject col-md-4">
-                            <a href="@Url.Action("Details", "TSTTickets", new { id=item.TicketID })">
-                            @Html.DisplayFor(modelItem => item.TicketSubject)
-                            </a>
-                        </div>
-                        <div class="ticket-submitted col-md-6">
-                            <div class="ticket-priority">
-                                
-                            </div>
-                            <span class="ticket-status">Current Status: @Html.DisplayFor(modelItem => item.TSTTicketStatus.TicketStatusName)</span>
+                    if (Model.DepartmentID == 4)
+                    {
 
-                           <span class="ticket-opened">Opened on: @Html.DisplayFor(modelItem => item.TicketSubmitted)</span>
-                            <div class="clearfix"></div>
-                        </div>
-                      
-                      
-                        <div class="ticket-tech col-md-2"><a title="@Html.DisplayFor(modelItem => item.TSTEmployee1.EmpFname)" href="@Url.Action("Details",new { id=item.TSTEmployee1.EmpID })">
-    <img class="loggedinpic" id="ticketTechImg" src="~/Content/TSTUserImages/@Html.DisplayFor(modelItem => item.TSTEmployee1.EmpPhoto)"  />
-   
-</a>
-</div>
-                        <div class="clearfix"></div>
-                    </div>
+                        <span class="emp-det-info-entry"><i style="margin-right: 1px; margin-left: 2px;" class="fa fa-university"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) Instructor since @Html.DisplayFor(model => model.EmpDateOfHire)</span>
 
-                
+                    }
+                    if (Model.DepartmentID == 3)
+                    {
+
+                        <span class="emp-det-info-entry"><i class="fa fa-code"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) Technician since @Html.DisplayFor(model => model.EmpDateOfHire)</span>
+
+                    }
+                    if (Model.DepartmentID == 5)
+                    {
+
+                        <span class="emp-det-info-entry"><i class="fa fa-user"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) HR Rep since @Html.DisplayFor(model => model.EmpDateOfHire)</span>
+
+                    }
+                    if (Model.DepartmentID == 1)
+                    {
+
+                        <span class="emp-det-info-entry"><i class="fa fa-briefcase"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) Administrator since @Html.DisplayFor(model => model.EmpDateOfHire)</span>
+
+                    }
+                    if (Model.DepartmentID == 6)
+                    {
+
+                        <span class="emp-det-info-entry"><i class="fa fa-book"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) as a Student since @Html.DisplayFor(model => model.EmpDateOfHire)</span>
+
+                    }
+                }
+                else
+                {
+                    if (Model.DepartmentID == 4)
+                    {
+                        if (Model.EmpStatusID == 3)
+                        {
+                            <span class="emp-det-info-entry"><i style="margin-right:2px;" class="fa fa-university"></i>Ex-Instructor, hired on: @Html.DisplayFor(model => model.EmpDateOfHire)</span>
+                                <span class="emp-det-info-entry"><i style="margin-left: 2px;margin-right: 1px;" class="fa fa-fire"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) on @Html.DisplayFor(model => model.EmpEndDate)</span>
+
+                        }
+                        if (Model.EmpStatusID == 5)
+                        {
+                            <span class="emp-det-info-entry"><i style="margin-right:2px;" class="fa fa-university"></i>Retired Instructor, hired on: @Html.DisplayFor(model => model.EmpDateOfHire)</span>
+                                <span class="emp-det-info-entry"><i style="margin-left: 2px;margin-right: 1px;" class="fa fa-glass"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) on @Html.DisplayFor(model => model.EmpEndDate)</span>
+
+                        }
+                    }
+                    if (Model.DepartmentID == 3)
+                    {
+                        if (Model.EmpStatusID == 3)
+                        {
+                            <span class="emp-det-info-entry"><i style="margin-right:2px;" class="fa fa-user"></i>Ex-HR Rep, hired on: @Html.DisplayFor(model => model.EmpDateOfHire)</span>
+                                <span class="emp-det-info-entry"><i style="margin-left: 2px;margin-right: 1px;" class="fa fa-fire"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) on @Html.DisplayFor(model => model.EmpEndDate)</span>
+
+                        }
+                        if (Model.EmpStatusID == 5)
+                        {
+                            <span class="emp-det-info-entry"><i style="margin-right:2px;" class="fa fa-user"></i>Retired HR Rep, hired on: @Html.DisplayFor(model => model.EmpDateOfHire)</span>
+                                <span class="emp-det-info-entry"><i style="margin-left: 2px;margin-right: 1px;" class="fa fa-glass"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) on @Html.DisplayFor(model => model.EmpEndDate)</span>
+
+                        }
+                    }
+                    if (Model.DepartmentID == 5)
+                    {
+                        if (Model.EmpStatusID == 3)
+                        {
+                            <span class="emp-det-info-entry"><i style="margin-right:2px;" class="fa fa-university"></i>Ex-Technician, hired on: @Html.DisplayFor(model => model.EmpDateOfHire)</span>
+                                <span class="emp-det-info-entry"><i style="margin-left: 2px;margin-right: 1px;" class="fa fa-fire"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) on @Html.DisplayFor(model => model.EmpEndDate)</span>
+
+                        }
+                        if (Model.EmpStatusID == 5)
+                        {
+                            <span class="emp-det-info-entry"><i style="margin-right:2px;" class="fa fa-university"></i>Retired Technician, hired on: @Html.DisplayFor(model => model.EmpDateOfHire)</span>
+                                <span class="emp-det-info-entry"><i style="margin-left: 2px;margin-right: 1px;" class="fa fa-glass"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) on @Html.DisplayFor(model => model.EmpEndDate)</span>
+
+                        }
+                    }
+                    if (Model.DepartmentID == 1)
+                    {
+                        if (Model.EmpStatusID == 3)
+                        {
+                            <span class="emp-det-info-entry"><i style="margin-right:2px;" class="fa fa-university"></i>Ex-Administrator, hired on: @Html.DisplayFor(model => model.EmpDateOfHire)</span>
+                                <span class="emp-det-info-entry"><i style="margin-left: 2px;margin-right: 1px;" class="fa fa-fire"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) on @Html.DisplayFor(model => model.EmpEndDate)</span>
+
+                        }
+                        if (Model.EmpStatusID == 5)
+                        {
+                            <span class="emp-det-info-entry"><i style="margin-right:2px;" class="fa fa-university"></i>Retired Administrator, hired on: @Html.DisplayFor(model => model.EmpDateOfHire)</span>
+                                <span class="emp-det-info-entry"><i style="margin-left: 2px;margin-right: 1px;" class="fa fa-glass"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) on @Html.DisplayFor(model => model.EmpEndDate)</span>
+
+                        }
+                    }
+                    if (Model.DepartmentID == 6)
+                    {
+                        if (Model.EmpStatusID == 4)
+                        {
+                            <span class="emp-det-info-entry"><i style="margin-right:2px;" class="fa fa-university"></i>Ex-Student, start date: @Html.DisplayFor(model => model.EmpDateOfHire)</span>
+                                <span class="emp-det-info-entry"><i style="margin-left: 2px;margin-right: 1px;" class="fa fa-exclamation"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) on @Html.DisplayFor(model => model.EmpEndDate)</span>
+
+                        }
+                        if (Model.EmpStatusID == 6)
+                        {
+                            <span class="emp-det-info-entry"><i style="margin-right:2px;" class="fa fa-university"></i>Dropout, start date: @Html.DisplayFor(model => model.EmpDateOfHire)</span>
+                                <span class="emp-det-info-entry"><i style="margin-left: 2px;margin-right: 1px;" class="fa fa-beer"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) on @Html.DisplayFor(model => model.EmpEndDate)</span>
+
+                        }
+                    }
 
                 }
+                @if (Model.EmpCity != null || Model.EmpState != null)
+                {
+                    <span class="emp-det-info-entry"><i style="margin-left: 3px; margin-right:4px;" class="fa fa-map-marker"></i>&nbsp;Lives in @Html.DisplayFor(model => model.GetCityState)</span>
+
+                }
+                <!-- #endregion -->
             </div>
-
-        }  }
-    </div>
-</div>
-
-@section modals {
-<div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-
-            @*<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>*@
-            <div class="modal-wrapper">
-            <div class="modal-body">
-                <div class="img-wrapper">
-                    <input type="hidden" id="grabPic" name="grabPic" value="@s" />
-                    <div name="employeePhoto" id="employeePhoto" style="background:url(../../Content/TSTUserImages/@s)" />
-                </div>
-            </div>
-
-                <div class="modal-control">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            @if (Model.EmpNotes != null)
+                {
+                <div class="emp-det-basic-notes">
+                    <h4 class="emp-det-basic-header">Notes</h4>
                     <div class="clearfix"></div>
-                    <div class="modal-button-wrapper">
-                        <div class="modal-control-buttons">
-                            <button type="button" id="btnSaveImage" class="btn btn-primary">Save Image</button>
+                    <p>@Html.DisplayFor(model => model.EmpNotes)</p>
+                </div>
+            }
+            @if (Model.DepartmentID == 6)
+                {
+                    //add grades, shows total credits, and gpa
+                }
+
+        </div>
+    }
+    else if(Request.IsAuthenticated)
+    {
+
+        <div class="emp-det-basic col-md-8 col-md-offset-2">
+            <div class="emp-det-basic-top text-center">
+                <h1>@Html.DisplayFor(model => model.GetFullName)</h1>
+                <img id="emp-photo" src="~/Content/TSTUserImages/@Html.DisplayFor(model => model.EmpPhoto)" />
+                @if (Request.IsAuthenticated && User.IsInRole("Admin") || Request.IsAuthenticated && Model.EmpUserID == currentUserId)
+                {
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#imageModal">Change Picture?</button>}
+
+
+                @*<input type="hidden" id="grabPic" name="grabPic" value="@ViewBag.PassImg" />
+                    <div name="employeePhoto" id="employeePhoto" />*@
+
+
+            </div>
+            <div class="emp-det-basic-bottom">
+                <h4 class="emp-det-basic-header">Basic Info</h4>
+                @*&& User.IsInRole("Admin") || Request.IsAuthenticated && Model.EmpUserID == currentUserId || Request.IsAuthenticated && User.IsInRole("HR")*@
+                @if (Request.IsAuthenticated)
+                {
+                    if (User.IsInRole("Admin") || User.IsInRole("HR"))
+                    {
+                        if (Model.DepartmentID == 6)
+                        {
+                            if (Model.EmpStatusID == 2)
+                            {
+                                @Html.ActionLink("Expell", "Delete", new { id = Model.EmpID }, new { @class = "btn btn-danger pull-right" })
+
+                            }
+                            else {
+                                @Html.ActionLink("Re-Enroll", "Delete", new { id = Model.EmpID }, new { @class = "btn btn-success pull-right" })
+
+                            }
+
+                            @Html.ActionLink("Edit Info", "Edit", new { id = Model.EmpID }, new { @class = "btn btn-primary pull-right" })
+
+
+                        }
+                        else
+                        {
+                            if (Model.EmpStatusID == 1)
+                            {
+                                @Html.ActionLink("Terminate", "Delete", new { id = Model.EmpID }, new { @class = "btn btn-danger pull-right" })
+
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Re-Hire", "Delete", new { id = Model.EmpID }, new { @class = "btn btn-success pull-right" })
+
+                            }
+
+                            @Html.ActionLink("Edit Info", "Edit", new { id = Model.EmpID }, new { @class = "btn btn-primary pull-right" })
+
+
+                        }
+                    }
+                    else if (Model.EmpUserID == currentUserId)
+                    {
+                        if (Model.DepartmentID == 6)
+                        {
+                            if (Model.EmpStatusID == 2)
+                            {
+                                @Html.ActionLink("Drop Out", "Resign", new { id = Model.EmpID }, new { @class = "btn btn-danger pull-right" })
+
+                            }
+                            else {
+                                @Html.ActionLink("Re-Enroll", "Resign", new { id = Model.EmpID }, new { @class = "btn btn-success pull-right" })
+
+                            }
+
+                            @Html.ActionLink("Edit Info", "Edit", new { id = Model.EmpID }, new { @class = "btn btn-primary pull-right" })
+
+
+                        }
+                        else
+                        {
+                            if (Model.EmpStatusID == 1)
+                            {
+                                @Html.ActionLink("Resign", "Resign", new { id = Model.EmpID }, new { @class = "btn btn-danger pull-right" })
+
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Re-Hire", "Delete", new { id = Model.EmpID }, new { @class = "btn btn-success pull-right" })
+
+                            }
+
+                            @Html.ActionLink("Edit Info", "Edit", new { id = Model.EmpID }, new { @class = "btn btn-primary pull-right" })
+
+                        }
+
+
+                    }
+                }
+                <span class="clearfix"></span>
+                <span class="emp-det-info-entry"><i class="fa fa-phone"></i>&nbsp;Phone: @Html.DisplayFor(model => model.EmpPhone)</span>
+                <span class="emp-det-info-entry"><i class="fa fa-envelope-o"></i>&nbsp;Email: @Html.DisplayFor(model => model.EmpEmail)</span>
+                <span class="emp-det-info-entry"><i class="fa fa-birthday-cake"></i>&nbsp;Born on @Html.DisplayFor(model => model.EmpDateOfBirth)</span>
+
+                <!-- #region Crazy Logic -->
+
+
+                @if (Model.EmpStatusID == 1 || Model.EmpStatusID == 2)
+                {
+                    if (Model.DepartmentID == 4)
+                    {
+
+                        <span class="emp-det-info-entry"><i style="margin-right: 1px; margin-left: 2px;" class="fa fa-university"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) Instructor since @Html.DisplayFor(model => model.EmpDateOfHire)</span>
+
+                    }
+                    if (Model.DepartmentID == 3)
+                    {
+
+                        <span class="emp-det-info-entry"><i class="fa fa-code"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) Technician since @Html.DisplayFor(model => model.EmpDateOfHire)</span>
+
+                    }
+                    if (Model.DepartmentID == 5)
+                    {
+
+                        <span class="emp-det-info-entry"><i class="fa fa-user"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) HR Rep since @Html.DisplayFor(model => model.EmpDateOfHire)</span>
+
+                    }
+                    if (Model.DepartmentID == 1)
+                    {
+
+                        <span class="emp-det-info-entry"><i class="fa fa-briefcase"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) Administrator since @Html.DisplayFor(model => model.EmpDateOfHire)</span>
+
+                    }
+                    if (Model.DepartmentID == 6)
+                    {
+
+                        <span class="emp-det-info-entry"><i class="fa fa-book"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) as a Student since @Html.DisplayFor(model => model.EmpDateOfHire)</span>
+
+                    }
+                }
+                else
+                {
+                    if (Model.DepartmentID == 4)
+                    {
+                        if (Model.EmpStatusID == 3)
+                        {
+                            <span class="emp-det-info-entry"><i style="margin-right:2px;" class="fa fa-university"></i>Ex-Instructor, hired on: @Html.DisplayFor(model => model.EmpDateOfHire)</span>
+                                <span class="emp-det-info-entry"><i style="margin-left: 2px;margin-right: 1px;" class="fa fa-fire"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) on @Html.DisplayFor(model => model.EmpEndDate)</span>
+
+                        }
+                        if (Model.EmpStatusID == 5)
+                        {
+                            <span class="emp-det-info-entry"><i style="margin-right:2px;" class="fa fa-university"></i>Retired Instructor, hired on: @Html.DisplayFor(model => model.EmpDateOfHire)</span>
+                                <span class="emp-det-info-entry"><i style="margin-left: 2px;margin-right: 1px;" class="fa fa-glass"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) on @Html.DisplayFor(model => model.EmpEndDate)</span>
+
+                        }
+                    }
+                    if (Model.DepartmentID == 3)
+                    {
+                        if (Model.EmpStatusID == 3)
+                        {
+                            <span class="emp-det-info-entry"><i style="margin-right:2px;" class="fa fa-user"></i>Ex-HR Rep, hired on: @Html.DisplayFor(model => model.EmpDateOfHire)</span>
+                                <span class="emp-det-info-entry"><i style="margin-left: 2px;margin-right: 1px;" class="fa fa-fire"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) on @Html.DisplayFor(model => model.EmpEndDate)</span>
+
+                        }
+                        if (Model.EmpStatusID == 5)
+                        {
+                            <span class="emp-det-info-entry"><i style="margin-right:2px;" class="fa fa-user"></i>Retired HR Rep, hired on: @Html.DisplayFor(model => model.EmpDateOfHire)</span>
+                                <span class="emp-det-info-entry"><i style="margin-left: 2px;margin-right: 1px;" class="fa fa-glass"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) on @Html.DisplayFor(model => model.EmpEndDate)</span>
+
+                        }
+                    }
+                    if (Model.DepartmentID == 5)
+                    {
+                        if (Model.EmpStatusID == 3)
+                        {
+                            <span class="emp-det-info-entry"><i style="margin-right:2px;" class="fa fa-university"></i>Ex-Technician, hired on: @Html.DisplayFor(model => model.EmpDateOfHire)</span>
+                                <span class="emp-det-info-entry"><i style="margin-left: 2px;margin-right: 1px;" class="fa fa-fire"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) on @Html.DisplayFor(model => model.EmpEndDate)</span>
+
+                        }
+                        if (Model.EmpStatusID == 5)
+                        {
+                            <span class="emp-det-info-entry"><i style="margin-right:2px;" class="fa fa-university"></i>Retired Technician, hired on: @Html.DisplayFor(model => model.EmpDateOfHire)</span>
+                                <span class="emp-det-info-entry"><i style="margin-left: 2px;margin-right: 1px;" class="fa fa-glass"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) on @Html.DisplayFor(model => model.EmpEndDate)</span>
+
+                        }
+                    }
+                    if (Model.DepartmentID == 1)
+                    {
+                        if (Model.EmpStatusID == 3)
+                        {
+                            <span class="emp-det-info-entry"><i style="margin-right:2px;" class="fa fa-university"></i>Ex-Administrator, hired on: @Html.DisplayFor(model => model.EmpDateOfHire)</span>
+                                <span class="emp-det-info-entry"><i style="margin-left: 2px;margin-right: 1px;" class="fa fa-fire"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) on @Html.DisplayFor(model => model.EmpEndDate)</span>
+
+                        }
+                        if (Model.EmpStatusID == 5)
+                        {
+                            <span class="emp-det-info-entry"><i style="margin-right:2px;" class="fa fa-university"></i>Retired Administrator, hired on: @Html.DisplayFor(model => model.EmpDateOfHire)</span>
+                                <span class="emp-det-info-entry"><i style="margin-left: 2px;margin-right: 1px;" class="fa fa-glass"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) on @Html.DisplayFor(model => model.EmpEndDate)</span>
+
+                        }
+                    }
+                    if (Model.DepartmentID == 6)
+                    {
+                        if (Model.EmpStatusID == 4)
+                        {
+                            <span class="emp-det-info-entry"><i style="margin-right:2px;" class="fa fa-university"></i>Ex-Student, start date: @Html.DisplayFor(model => model.EmpDateOfHire)</span>
+                                <span class="emp-det-info-entry"><i style="margin-left: 2px;margin-right: 1px;" class="fa fa-exclamation"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) on @Html.DisplayFor(model => model.EmpEndDate)</span>
+
+                        }
+                        if (Model.EmpStatusID == 6)
+                        {
+                            <span class="emp-det-info-entry"><i style="margin-right:2px;" class="fa fa-university"></i>Dropout, start date: @Html.DisplayFor(model => model.EmpDateOfHire)</span>
+                                <span class="emp-det-info-entry"><i style="margin-left: 2px;margin-right: 1px;" class="fa fa-beer"></i>&nbsp;@Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName) on @Html.DisplayFor(model => model.EmpEndDate)</span>
+
+                        }
+                    }
+
+                }
+                @if (Model.EmpCity != null || Model.EmpState != null)
+                {
+                    <span class="emp-det-info-entry"><i style="margin-left: 3px; margin-right:4px;" class="fa fa-map-marker"></i>&nbsp;Lives in @Html.DisplayFor(model => model.GetCityState)</span>
+
+                }
+                <!-- #endregion -->
+            </div>
+            @if (Model.EmpNotes != null)
+                {
+                <div class="emp-det-basic-notes">
+                    <h4 class="emp-det-basic-header">Notes</h4>
+                    <div class="clearfix"></div>
+                    <p>@Html.DisplayFor(model => model.EmpNotes)</p>
+                </div>
+            }
+            @if (Model.DepartmentID == 6)
+                {
+                    //add grades, shows total credits, and gpa
+                }
+
+        </div>
+    }
+
+
+           
+
+            @* Conditional views based on user role/department *@
+            <div class="col-md-8 col-md-offset-2 emp-det-conditional">
+
+                @if (Model.DepartmentID == 4)
+                {
+                    //teacher view
+
+                    //add courses employee is currently teaching
+
+                }
+                else if (Model.DepartmentID == 3)
+                {
+                    //add tickets employee is currently working
+
+                    //tech view
+
+                }
+                else if (Model.DepartmentID == 5)
+                {
+                    //hr view
+
+                }
+                else if (Model.DepartmentID == 1)
+                {
+                    //add all tickets, add all courses currently being taught
+
+                    //admin view
+
+                }
+                else if (Model.DepartmentID == 6)
+                {
+                    //add all courses student is in enrolled in
+                    //student view
+
+                }
+                @if (Request.IsAuthenticated && Model.EmpUserID == currentUserId)
+                {
+
+
+                    if (myTickets.Any<TSTTicket>())
+                    {
+                        <div class="myTicketsWrapper">
+                            <h2 class="text-center">My Support Tickets</h2>
+                            <div class="ticket-headers">
+                                @foreach (var item in myTickets)
+                                {
+                                    <div class="ticket-entry row" id="@Html.DisplayFor(modelItem => item.TicketID )">
+                                        <div class="ticket-subject">
+                                            <a href="@Url.Action("Details", "TSTTickets", new { id=item.TicketID })">
+                                                @Html.DisplayFor(modelItem => item.TicketSubject)
+                                            </a>
+                                        </div>
+                                        <div class="ticket-submitted">
+                                            <div class="ticket-priority">
+
+                                            </div>
+                                            <span class="ticket-status">Current Status: @Html.DisplayFor(modelItem => item.TSTTicketStatus.TicketStatusName)</span>
+
+                                            <span class="ticket-opened">Opened on: @Html.DisplayFor(modelItem => item.TicketSubmitted)</span>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+
+                                        <div class="ticket-tech">
+                                            <a title="@Html.DisplayFor(modelItem => item.TSTEmployee1.EmpFname)" href="@Url.Action("Details",new { id=item.TSTEmployee1.EmpID })">
+                                                <img class="loggedinpic" id="ticketTechImg" src="~/Content/TSTUserImages/@Html.DisplayFor(modelItem => item.TSTEmployee1.EmpPhoto)" />
+
+                                            </a>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+
+
+
+                                }
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+    @section modals {
+        <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+
+                    @*<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>*@
+                    <div class="modal-wrapper">
+                        <div class="modal-body">
+                            <div class="img-wrapper">
+                                <input type="hidden" id="grabPic" name="grabPic" value="@s" />
+                                <div name="employeePhoto" id="employeePhoto" style="background:url(../../Content/TSTUserImages/@s)" />
+                            </div>
+                        </div>
+
+                        <div class="modal-control">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <div class="clearfix"></div>
+                            <div class="modal-button-wrapper">
+                                <div id="modal-buttons" class="modal-control-buttons">
+                                    <p id="modal-p-tag">Please upload a photo</p>
+                                    <button type="button" id="btnSaveImage" class="btn btn-primary">Save Image</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+            </div>
         </div>
-    </div>
-  
-    </div>
-</div>
     }
 
-@section Scripts {
-<script>
-    //croppic
-    var cropperOptions = {
-        uploadUrl: "@Url.Action("UploadOriginalImage")",
-        cropUrl: "@Url.Action("CroppedImage")"
+        @section Scripts {
+            <script>
+                //croppic
+                var cropperOptions = {
+                    uploadUrl: "@Url.Action("UploadOriginalImage")",
+                    cropUrl: "@Url.Action("CroppedImage")"
 
-    }
-    var cropperHeader = new Croppic('employeePhoto', cropperOptions);
- 
-    //modal
-    $('#imageModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget) // Button that triggered the modal
-        var recipient = button.data('whatever') // Extract info from data-* attributes
-        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-        var modal = $(this)
-    
-    })
-</script>
-    @* preview imag/grab functionality *@
-<script>
-    $(document).ready(function () {
-        var $box = $("#employeePhoto")
-            var $previewPic = $("#employeePhoto > div > i").click(function () {
-                $box.css('background-image', "none");
-            })
-          
-            //$box.css('background-image', 'url(../../Content/TSTUserImages/' + $previewPic + ')');
-            console.log();
-        });
-</script>
-    @* ajax call for img upload on details *@
-    <script>
-        $(function () {
-            $("#btnSaveImage").click(function () {
+                }
+                var cropperHeader = new Croppic('employeePhoto', cropperOptions);
 
-                var img = $("#img").val();
-                console.log(img);
+                //modal
+                $('#imageModal').on('show.bs.modal', function (event) {
+                    var button = $(event.relatedTarget) // Button that triggered the modal
+                    var recipient = button.data('whatever') // Extract info from data-* attributes
+                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                    var modal = $(this)
 
+                })
+            </script>
+            @* preview imag/grab functionality *@
+            <script>
+                $(document).ready(function () {
+                    var $box = $("#employeePhoto")
+                    var $previewPic = $("#employeePhoto > div > i").click(function () {
+                        $box.css('background-image', "none");
+                    })
 
-                $.ajax({
-                    url: "../../TSTEmployees/ChangePhoto?Id=@Model.EmpID&img=" + img,
-                    success: function (data) {
-                        document.getElementById("emp-photo").src = "../../Content/TSTUserImages/" + data.Photo + "?random=" + new Date().getTime();
-                        if (data.ModelUserID == data.CurrentUserID) {
-                            document.getElementById("navPic").src = "../../Content/TSTUserImages/" + data.Photo + "?random=" + new Date().getTime();
-                        };
-                       
-                    }
+                    //$box.css('background-image', 'url(../../Content/TSTUserImages/' + $previewPic + ')');
+                    console.log();
                 });
+            </script>
+            @* ajax call for img upload on details *@
+            <script>
+                $(document).ready(function () {
+                    $(function () {
+                        $("#btnSaveImage").click(function () {
 
-            });
-        });
-    </script>
-    @* jquery tool tips *@
-    <script>
-        $(function () {
-            $("#show-option").tooltip({
-                show: {
-                    effect: "slideDown",
-                    delay: 250
-                }
-            });
-            $("#hide-option").tooltip({
-                hide: {
-                    effect: "explode",
-                    delay: 250
-                }
-            });
-            $("#open-event").tooltip({
-                show: null,
-                position: {
-                    my: "left top",
-                    at: "left bottom"
-                },
-                open: function (event, ui) {
-                    ui.tooltip.animate({ top: ui.tooltip.position().top + 10 }, "fast");
-                }
-            });
-        });
-    </script>
-    @* pulse on hover script *@
-    <script>
-    
-      
+                            var img = $("#img").val();
+
+                            if (img != null) {
+
+                                $.ajax({
+                                    url: "../../TSTEmployees/ChangePhoto?Id=@Model.EmpID&img=" + img,
+                                    success: function (data) {
+                                        document.getElementById("emp-photo").src = "../../Content/TSTUserImages/" + data.Photo + "?random=" + new Date().getTime();
+                                        if (data.ModelUserID == data.CurrentUserID) {
+                                            document.getElementById("navPic").src = "../../Content/TSTUserImages/" + data.Photo + "?random=" + new Date().getTime();
+                                        };
+                                        $("#modal-p-tag").text("Image saved successfully!");
+
+                                    }
+                                });
+                            }
+                            else {
+                                $("#modal-p-tag").text("Please make sure your done cropping!");
+                            }
 
 
+                        });
+                    });
+                });
+            </script>
 
-     
-        var $ticketIDs = [];
-        var $priorityIDs = [];
+        }
+        @*<div>
+                <h4>TSTEmployee</h4>
+                <hr />
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.EmpFname)
+                    </dt>
 
+                    <dd>
+                        @Html.DisplayFor(model => model.EmpFname)
+                    </dd>
 
-        $(".myTicketsWrapper").find(".ticket-entry").each(function () {
-            var that = this.id;
+                    <dt>
+                        @Html.DisplayNameFor(model => model.EmpLname)
+                    </dt>
 
-            $("#" + that).hover(function () {
+                    <dd>
+                        @Html.DisplayFor(model => model.EmpLname)
+                    </dd>
 
-                $("#p_" + that).addClass("pulseHighOuter");
-                $("#p_" + that + "> .ticket-priority-high-inner").addClass("pulseHighInner");
-            }, function () {
-                $("#p_" + that).removeClass("pulseHighOuter");
-                $("#p_" + that + "> .ticket-priority-high-inner").removeClass("pulseHighInner");
-            });
+                    <dt>
+                        @Html.DisplayNameFor(model => model.EmpAddress1)
+                    </dt>
 
+                    <dd>
+                        @Html.DisplayFor(model => model.EmpAddress1)
+                    </dd>
 
-        
+                    <dt>
+                        @Html.DisplayNameFor(model => model.EmpAddress2)
+                    </dt>
 
+                    <dd>
+                        @Html.DisplayFor(model => model.EmpAddress2)
+                    </dd>
 
+                    <dt>
+                        @Html.DisplayNameFor(model => model.EmpCity)
+                    </dt>
 
+                    <dd>
+                        @Html.DisplayFor(model => model.EmpCity)
+                    </dd>
 
-        });
+                    <dt>
+                        @Html.DisplayNameFor<h2>Details</h2>(model => model.EmpState)
+                    </dt>
 
+                    <dd>
+                        @Html.DisplayFor(model => model.EmpState)
+                    </dd>
 
-        //jQuery.each($ticketIDs, function (id, val) {
- 
-        //    $("#" + id).hover(function () {
+                    <dt>
+                        @Html.DisplayNameFor(model => model.EmpPhoto)
+                    </dt>
 
-        //        $("#p_" + id).addClass("pulseHighOuter");
-        //        $("#p_" + id + "> .ticket-priority-high-inner").addClass("pulseHighInner");
-        //    }, function () {
-        //        $("#p_" + id).removeClass("pulseHighOuter");
-        //         $("#p_" + id + "> .ticket-priority-high-inner").removeClass("pulseHighInner");
-        //    });
+                    <dd>
+                        @Html.DisplayFor(model => model.EmpPhoto)
+                    </dd>
 
-    
-        //});
-    
-            //mouse in
-            //$(".ticket-priority-high").hover(function () {
-            //    $(".ticket-priority-high").addClass("pulseHighOuter", 0);
-            //    $(".ticket-priority-high-inner").addClass("pulseHighInner", 0);
-            //}, function () {
-            //    $(".ticket-priority-high").removeClass("pulseHighOuter", 0);
-            //    $(".ticket-priority-high-inner").removeClass("pulseHighInner", 0);
-            //});
-            //jQuery.each($ticketIdArray, function (i, val) {
+                    <dt>
+                        @Html.DisplayNameFor(model => model.EmpUserID)
+                    </dt>
 
-            //    var $ticketId = $(val);
-            //    var $outer = $ticketId.closest(".ticket-priority-high");
-            //    var $inner = $ticketId.closest(".ticket-priority-high-inner");
+                    <dd>
+                        @Html.DisplayFor(model => model.EmpUserID)
+                    </dd>
 
+                    <dt>
+                        @Html.DisplayNameFor(model => model.EmpDateOfBirth)
+                    </dt>
 
+                    <dd>
+                        @Html.DisplayFor(model => model.EmpDateOfBirth)
+                    </dd>
 
+                    <dt>
+                        @Html.DisplayNameFor(model => model.EmpDateOfHire)
+                    </dt>
 
-            //    $ticketId.hover(function () {
-            //        $outer.addClass(".pulseHighOuter", 0, "linear");
-            //        $inner.addClass(".pulseHighInner", 0, "linear");
-            //    }, function () {
-            //        $outer.removeClass(".pulseHighOuter", 0, "linear");
-            //        $inner.removeClass(".pulseHighInner", 0, "linear");
+                    <dd>
+                        @Html.DisplayFor(model => model.EmpDateOfHire)
+                    </dd>
 
-            //    });
-            //});
+                    <dt>
+                        @Html.DisplayNameFor(model => model.EmpEndDate)
+                    </dt>
 
+                    <dd>
+                        @Html.DisplayFor(model => model.EmpEndDate)
+                    </dd>
 
-            //var $ticketIdArray = []
-            //$(".ticket-entry").each(function () {
-            //    $(this).hover(function () {
-            //        $(".ticket-priority-high").addClass("pulseHighOuter", 0, "linear");
-            //        $(".ticket-priority-high-inner").addClass("pulseHighInner", 0, "linear");
-            //    }, function () {
-            //        $(".ticket-priority-high").removeClass("pulseHighOuter", 0);
-            //        $(".ticket-priority-high-inner").removeClass("pulseHighInner", 0);
-            //    });
-                
-                
-                
-               
-            //});
-          
+                    <dt>
+                        @Html.DisplayNameFor(model => model.EmpPhone)
+                    </dt>
 
-       
-    </script>
-}
-@*<div>
-    <h4>TSTEmployee</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.EmpFname)
-        </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.EmpPhone)
+                    </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.EmpFname)
-        </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.EmpEmail)
+                    </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.EmpLname)
-        </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.EmpEmail)
+                    </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.EmpLname)
-        </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.EmpNotes)
+                    </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.EmpAddress1)
-        </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.EmpNotes)
+                    </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.EmpAddress1)
-        </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.TSTDepartment.DepartmentName)
+                    </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.EmpAddress2)
-        </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.TSTDepartment.DepartmentName)
+                    </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.EmpAddress2)
-        </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.TSTEmployeeStatus.EmpStatusName)
+                    </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.EmpCity)
-        </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName)
+                    </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.EmpCity)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor<h2>Details</h2>(model => model.EmpState)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EmpState)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.EmpPhoto)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EmpPhoto)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.EmpUserID)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EmpUserID)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.EmpDateOfBirth)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EmpDateOfBirth)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.EmpDateOfHire)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EmpDateOfHire)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.EmpEndDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EmpEndDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.EmpPhone)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EmpPhone)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.EmpEmail)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EmpEmail)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.EmpNotes)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EmpNotes)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TSTDepartment.DepartmentName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TSTDepartment.DepartmentName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TSTEmployeeStatus.EmpStatusName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName)
-        </dd>
-
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.EmpID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>*@
+                </dl>
+            </div>
+            <p>
+                @Html.ActionLink("Edit", "Edit", new { id = Model.EmpID }) |
+                @Html.ActionLink("Back to List", "Index")
+            </p>*@

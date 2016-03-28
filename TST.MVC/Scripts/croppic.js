@@ -163,7 +163,8 @@
 					if (typeof (that.options.onBeforeRemoveCroppedImg) === typeof(Function)) {
 						that.options.onBeforeRemoveCroppedImg.call(that);
 					}
-					
+
+				
 					that.croppedImg.remove();
 					$("#img").remove();
 					that.croppedImg = {};
@@ -277,7 +278,8 @@
 						
 			}else{					
 				that.cropControlRemoveCroppedImage.on('click',function(){ 
-					that.croppedImg.remove();
+				    that.croppedImg.remove();
+
 					$(this).hide();
 					
 					if( !$.isEmptyObject(that.defaultImg)){ 
@@ -703,9 +705,11 @@
 					that.imgEyecandy.hide();
 
                 that.destroy();
-				
+          
                 that.obj.append('<img class="croppedImg" src="' + response.url + '">');
                 that.obj.append('<input type="hidden" id="img" name="img" value="' + response.url + '">');
+              
+
                 if (that.options.outputUrlId !== '') { $('#' + that.options.outputUrlId).val(response.url); }
 
                 that.croppedImg = that.obj.find('.croppedImg');

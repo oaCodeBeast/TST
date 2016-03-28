@@ -387,6 +387,7 @@
     <Content Include="Views\TSTTicketStatus\Edit.cshtml" />
     <Content Include="Views\TSTTicketStatus\Index.cshtml" />
     <Content Include="Scripts\underscore-min.map" />
+    <Content Include="Views\TSTEmployees\Resign.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

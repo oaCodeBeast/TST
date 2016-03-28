@@ -50,6 +50,7 @@ namespace TST.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
+                tSTDepartment.IsActive = true;
                 db.TSTDepartments.Add(tSTDepartment);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -110,7 +111,16 @@ namespace TST.MVC.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             TSTDepartment tSTDepartment = db.TSTDepartments.Find(id);
-            db.TSTDepartments.Remove(tSTDepartment);
+
+            if(tSTDepartment.IsActive == true)
+            {
+                tSTDepartment.IsActive = false;
+            }
+            else
+            {
+                tSTDepartment.IsActive = true;
+            }
+
             db.SaveChanges();
             return RedirectToAction("Index");
         }

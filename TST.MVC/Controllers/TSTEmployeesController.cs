@@ -53,6 +53,7 @@ namespace TST.MVC.Controllers
         }
 
         // GET: TSTEmployees/Create
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             var RoleManager = HttpContext.GetOwinContext().Get<ApplicationRoleManager>();
@@ -72,7 +73,7 @@ namespace TST.MVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-
+        [Authorize(Roles = "Admin, HR")]
         public ActionResult Create([Bind(Include = "EmpID,EmpFname,EmpLname,DepartmentID,EmpStatusID,EmpAddress1,EmpAddress2,EmpCity,EmpState,EmpPhoto,EmpUserID,EmpDateOfBirth,EmpDateOfHire,EmpEndDate,EmpEmail,EmpPhone,EmpNotes")] TSTEmployee tSTEmployee)
         {
             ModelState.Clear();
@@ -169,6 +170,7 @@ namespace TST.MVC.Controllers
         }
 
         // GET: TSTEmployees/Edit/5
+        [Authorize(Roles = "Admin, HR")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -176,23 +178,23 @@ namespace TST.MVC.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             TSTEmployee tSTEmployee = db.TSTEmployees.Find(id);
-            //grab image string
-           ViewBag.PassImg = tSTEmployee.EmpPhoto;
-           
+      
+
             if (tSTEmployee == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.DepartmentID = new SelectList(db.TSTDepartments.Where(d => d.DepartmentID != tSTEmployee.DepartmentID), "DepartmentID", "DepartmentName", tSTEmployee.DepartmentID);
 
             if( tSTEmployee.DepartmentID == 6)
             {
                 ViewBag.EmpStatusID = new SelectList(db.TSTEmployeeStatuses.Where(s => s.EmpStatusID.Equals(2) || s.EmpStatusID.Equals(4) || s.EmpStatusID.Equals(6)), "EmpStatusID", "EmpStatusName", tSTEmployee.EmpStatusID);
+                
+
 
             }
-            else{
+            else {
                 ViewBag.EmpStatusID = new SelectList(db.TSTEmployeeStatuses.Where(s => s.EmpStatusID.Equals(1) || s.EmpStatusID.Equals(3) || s.EmpStatusID.Equals(5)), "EmpStatusID", "EmpStatusName", tSTEmployee.EmpStatusID);
-
+                ViewBag.DepartmentID = new SelectList(db.TSTDepartments.Where(d => d.DepartmentID != tSTEmployee.DepartmentID).Where(d => d.DepartmentID != 6), "DepartmentID", "DepartmentName", tSTEmployee.DepartmentID);
             }
             return View(tSTEmployee);
         }
@@ -202,31 +204,89 @@ namespace TST.MVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, HR")]
         public ActionResult Edit([Bind(Include = "EmpID,EmpFname,EmpLname,DepartmentID,EmpStatusID,EmpAddress1,EmpAddress2,EmpCity,EmpState,EmpPhoto,EmpUserID,EmpDateOfBirth,EmpDateOfHire,EmpEndDate,EmpPhone,EmpEmail,EmpNotes")] TSTEmployee tSTEmployee, string img, string grabPic)
         {
+            ModelState.Clear();
             if (ModelState.IsValid)
             {
-                string imageName = grabPic;
-                //get images for delete
-                //check if file is empty
-                if (img != null)
+                // string imageName = grabPic;
+                ////get images for delete
+                ////check if file is empty
+                //if (img != null)
+                //{
+                //    imageName = img.Substring(img.LastIndexOf('/') + 1);
+
+                //}
+                //tSTEmployee.EmpPhoto = imageName;
+
+
+                //create the user manager
+
+                //send back to identitiy default pass
+
+                //add the user to selected roles
+                var userManager = System.Web.HttpContext.Current.GetOwinContext()
+                .GetUserManager<ApplicationUserManager>();
+                //grab the user's user id, then the role, then remove them from the role, based on department
+                var newUser = userManager.FindByEmail(tSTEmployee.EmpEmail);
+                var userRole = userManager.GetRoles(newUser.Id.ToString());
+              
+                //manages role and status assignment
+                switch (tSTEmployee.DepartmentID)
                 {
-                    imageName = img.Substring(img.LastIndexOf('/') + 1);
-                    
+
+
+                    case 1://admin
+                        tSTEmployee.EmpStatusID = 1;
+                        userManager.RemoveFromRole(newUser.Id.ToString(), userRole[0]);
+                        userManager.AddToRole(newUser.Id.ToString(), "Admin");
+                        break;
+                    case 3://teacher
+                        tSTEmployee.EmpStatusID = 1;
+                        userManager.RemoveFromRole(newUser.Id.ToString(), userRole[0]);
+                        userManager.AddToRole(newUser.Id.ToString(), "Tech");
+                        break;
+                    case 4://HR
+                        tSTEmployee.EmpStatusID = 1;
+                        userManager.RemoveFromRole(newUser.Id.ToString(), userRole[0]);
+                        userManager.AddToRole(newUser.Id.ToString(), "Teacher");
+                        break;
+                    case 5:
+                        tSTEmployee.EmpStatusID = 1;
+                        userManager.RemoveFromRole(newUser.Id.ToString(), userRole[0]);
+                        userManager.AddToRole(newUser.Id.ToString(), "HR");
+                        break;
+                    default://student
+                        tSTEmployee.EmpStatusID = 2;
+                        userManager.RemoveFromRole(newUser.Id.ToString(), userRole[0]);
+                        userManager.AddToRole(newUser.Id.ToString(), "Student");
+                        break;
                 }
-                tSTEmployee.EmpPhoto = imageName;
+
 
                 db.Entry(tSTEmployee).State = EntityState.Modified;
                 db.SaveChanges();
 
                 return RedirectToAction("Index");
             }
-            ViewBag.DepartmentID = new SelectList(db.TSTDepartments, "DepartmentID", "DepartmentName", tSTEmployee.DepartmentID);
-            ViewBag.EmpStatusID = new SelectList(db.TSTEmployeeStatuses, "EmpStatusID", "EmpStatusName", tSTEmployee.EmpStatusID);
+            if (tSTEmployee.DepartmentID == 6)
+            {
+                ViewBag.EmpStatusID = new SelectList(db.TSTEmployeeStatuses.Where(s => s.EmpStatusID.Equals(2) || s.EmpStatusID.Equals(4) || s.EmpStatusID.Equals(6)), "EmpStatusID", "EmpStatusName", tSTEmployee.EmpStatusID);
+
+
+
+            }
+            else {
+                ViewBag.EmpStatusID = new SelectList(db.TSTEmployeeStatuses.Where(s => s.EmpStatusID.Equals(1) || s.EmpStatusID.Equals(3) || s.EmpStatusID.Equals(5)), "EmpStatusID", "EmpStatusName", tSTEmployee.EmpStatusID);
+                ViewBag.DepartmentID = new SelectList(db.TSTDepartments.Where(d => d.DepartmentID != tSTEmployee.DepartmentID).Where(d => d.DepartmentID != 6), "DepartmentID", "DepartmentName", tSTEmployee.DepartmentID);
+
+            }
             return View(tSTEmployee);
         }
 
         // GET: TSTEmployees/Delete/5
+        [Authorize(Roles = "Admin, HR")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -244,21 +304,94 @@ namespace TST.MVC.Controllers
         // POST: TSTEmployees/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, HR")]
         public ActionResult DeleteConfirmed(int id)
         {
             TSTEmployee tSTEmployee = db.TSTEmployees.Find(id);
             if(tSTEmployee.DepartmentID == 6)
             {
-                tSTEmployee.EmpStatusID = 4;
+                if (tSTEmployee.EmpStatusID == 2)
+                {
+                    tSTEmployee.EmpStatusID = 4;
+
+                    tSTEmployee.EmpEndDate = DateTime.Now;
+                }
+                else if (tSTEmployee.EmpStatusID == 4 || tSTEmployee.EmpStatusID == 6)
+                {
+                    tSTEmployee.EmpStatusID = 2;
+                    tSTEmployee.EmpDateOfHire = DateTime.Now;
+                }
             }
             else
             {
-                tSTEmployee.EmpStatusID = 3;
+                if(tSTEmployee.EmpStatusID == 1)
+                {
+                    tSTEmployee.EmpStatusID = 3;
+                   tSTEmployee.EmpEndDate = DateTime.Now;
+                }
+                else if(tSTEmployee.EmpStatusID == 3 || tSTEmployee.EmpStatusID == 5)
+                {
+                    tSTEmployee.EmpStatusID = 1;
+
+                    tSTEmployee.EmpDateOfHire = DateTime.Now;
+
+                }
+            }
+           
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        //Resign
+  
+        public ActionResult Resign(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            TSTEmployee tSTEmployee = db.TSTEmployees.Find(id);
+            if (tSTEmployee == null)
+            {
+                return HttpNotFound();
+            }
+            return View(tSTEmployee);
+        }
+
+        // POST: TSTEmployees/Delete/5
+        [HttpPost, ActionName("Resign")]
+        [ValidateAntiForgeryToken]
+
+        public ActionResult ResignConfirmed(int id)
+        {
+            TSTEmployee tSTEmployee = db.TSTEmployees.Find(id);
+            if (tSTEmployee.DepartmentID == 6)
+            {
+                if (tSTEmployee.EmpStatusID == 2)
+                {
+                    tSTEmployee.EmpStatusID = 6;
+
+                    tSTEmployee.EmpEndDate = DateTime.Now;
+                }
+                else if(tSTEmployee.EmpStatusID == 6)
+                {
+                    tSTEmployee.EmpStatusID = 2;
+                    tSTEmployee.EmpDateOfHire = DateTime.Now;
+                }
+           
+            }
+            else
+            {
+                if (tSTEmployee.EmpStatusID == 1)
+                {
+                    tSTEmployee.EmpStatusID = 5;
+
+                    tSTEmployee.EmpEndDate = DateTime.Now;
+                }
+        
             }
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -269,6 +402,7 @@ namespace TST.MVC.Controllers
         }
 
         [HttpPost]
+        
         public string UploadOriginalImage(HttpPostedFileBase img)
         {
             string folder = Server.MapPath("~/Content/Temp");

@@ -127,6 +127,8 @@ namespace TST.DAL
     #region Department
     public class TSTDepartmentMetaData
     {
+        [Display(Name = "Department")]
+        public int DepartmentID { get; set; }
         [Required(ErrorMessage = "* Required")]
         [Display(Name = "Department Name")]
         [StringLength(25, ErrorMessage = "* Department name must be shorter than 25 characters.")]
