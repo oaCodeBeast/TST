@@ -10,6 +10,7 @@ using TST.DAL;
 
 namespace TST.MVC.Controllers
 {
+    [Authorize(Roles = "Admin, HR")]
     public class TSTEmployeeStatusController : Controller
     {
         private TSTEntities db = new TSTEntities();
@@ -21,19 +22,7 @@ namespace TST.MVC.Controllers
         }
 
         // GET: TSTEmployeeStatus/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            TSTEmployeeStatus tSTEmployeeStatus = db.TSTEmployeeStatuses.Find(id);
-            if (tSTEmployeeStatus == null)
-            {
-                return HttpNotFound();
-            }
-            return View(tSTEmployeeStatus);
-        }
+     
 
         // GET: TSTEmployeeStatus/Create
         public ActionResult Create()
@@ -90,30 +79,7 @@ namespace TST.MVC.Controllers
         }
 
         // GET: TSTEmployeeStatus/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            TSTEmployeeStatus tSTEmployeeStatus = db.TSTEmployeeStatuses.Find(id);
-            if (tSTEmployeeStatus == null)
-            {
-                return HttpNotFound();
-            }
-            return View(tSTEmployeeStatus);
-        }
-
-        // POST: TSTEmployeeStatus/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            TSTEmployeeStatus tSTEmployeeStatus = db.TSTEmployeeStatuses.Find(id);
-            db.TSTEmployeeStatuses.Remove(tSTEmployeeStatus);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+ 
 
         protected override void Dispose(bool disposing)
         {

@@ -13,9 +13,9 @@
 
 <div class="container emps-wrapper">
     <ul class="nav nav-tabs emps-nav">
-@if (Request.IsAuthenticated && User.IsInRole("Admin"))
+@if (Request.IsAuthenticated && User.IsInRole("Admin") )
 {
-        @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-default " })
+        @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary " })
         <li role="presentation" class="active"><a href="#1" data-toggle="tab">Active Employees</a></li>
         <li role="presentation"><a href="#2" data-toggle="tab">Inactive Employees</a></li>
         <li role="presentation"><a href="#3" data-toggle="tab">Active Students</a></li>
@@ -28,6 +28,7 @@ else if (Request.IsAuthenticated && User.IsInRole("Teacher"))
 }
 else if (Request.IsAuthenticated && User.IsInRole("HR"))
 {
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary " })
     <li role="presentation" class="active"><a href="#1" data-toggle="tab">Active Employees</a></li>
     <li role="presentation"><a href="#2" data-toggle="tab">Inactive Employees</a></li>
 }

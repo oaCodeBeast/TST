@@ -10,6 +10,7 @@ using TST.DAL;
 
 namespace TST.MVC.Controllers
 {
+    [Authorize(Roles = "Admin, HR")]
     public class TSTDepartmentsController : Controller
     {
         private TSTEntities db = new TSTEntities();
@@ -20,20 +21,7 @@ namespace TST.MVC.Controllers
             return View(db.TSTDepartments.ToList());
         }
 
-        // GET: TSTDepartments/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            TSTDepartment tSTDepartment = db.TSTDepartments.Find(id);
-            if (tSTDepartment == null)
-            {
-                return HttpNotFound();
-            }
-            return View(tSTDepartment);
-        }
+ 
 
         // GET: TSTDepartments/Create
         public ActionResult Create()

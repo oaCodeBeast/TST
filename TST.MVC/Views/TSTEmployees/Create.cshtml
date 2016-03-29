@@ -1,7 +1,7 @@
 ﻿@model TST.DAL.TSTEmployee
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Add an Employee";
 }
 <div class="frm-wrapper">
     <h2>Please enter basic info</h2>
@@ -49,7 +49,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.EmpState, htmlAttributes: new { @class = "control-label col-md-4" })
                     <div class="col-md-8">
-                        @Html.EditorFor(model => model.EmpState, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.DropDownListFor(model => model.EmpState, TST.MVC.Controllers.TSTEmployeesController.GetProvincesList(), new { @class = "form-control", @size = 5 })
                         @Html.ValidationMessageFor(model => model.EmpState, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -58,7 +58,7 @@
 
 
 
-                <div class="form-group">
+                <div class="form-group dob">
                     @Html.LabelFor(model => model.EmpDateOfBirth, htmlAttributes: new { @class = "control-label col-md-4" })
                     <div class="col-md-8">
                         @Html.EditorFor(model => model.EmpDateOfBirth, new { htmlAttributes = new { @class = "form-control" } })
@@ -80,11 +80,11 @@
 
 
                 <div class="form-group">
-                    <div class="col-md-offset-4 col-md-8">
-                        <div>
-                            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
-                        </div>
-                        <input type="submit" value="Create" class="btn btn-default" />
+                    <div>
+                     
+                            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-primary" })
+                 
+                        <input type="submit" value="Create" class="btn btn-success" />
                     </div>
                 </div>
             </div>
@@ -104,7 +104,7 @@
   
                 changeYear: true,
                 showButtonPanel: true,
-                yearRange: "1995:2016"
+                yearRange: "1970:2000"
                 
             
             });   

@@ -10,6 +10,7 @@ using TST.DAL;
 
 namespace TST.MVC.Controllers
 {
+    [Authorize(Roles = "Admin, Tech")]
     public class TSTTicketStatusController : Controller
     {
         private TSTEntities db = new TSTEntities();
@@ -21,19 +22,7 @@ namespace TST.MVC.Controllers
         }
 
         // GET: TSTTicketStatus/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            TSTTicketStatus tSTTicketStatus = db.TSTTicketStatuses.Find(id);
-            if (tSTTicketStatus == null)
-            {
-                return HttpNotFound();
-            }
-            return View(tSTTicketStatus);
-        }
+  
 
         // GET: TSTTicketStatus/Create
         public ActionResult Create()
@@ -89,31 +78,7 @@ namespace TST.MVC.Controllers
             return View(tSTTicketStatus);
         }
 
-        // GET: TSTTicketStatus/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            TSTTicketStatus tSTTicketStatus = db.TSTTicketStatuses.Find(id);
-            if (tSTTicketStatus == null)
-            {
-                return HttpNotFound();
-            }
-            return View(tSTTicketStatus);
-        }
 
-        // POST: TSTTicketStatus/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            TSTTicketStatus tSTTicketStatus = db.TSTTicketStatuses.Find(id);
-            db.TSTTicketStatuses.Remove(tSTTicketStatus);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
 
         protected override void Dispose(bool disposing)
         {

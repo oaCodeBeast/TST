@@ -1,39 +1,32 @@
 ﻿@model IEnumerable<TST.DAL.TSTTicketStatus>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "All Ticket Statuses";
 }
 
-<h2>Index</h2>
+<h2 class="text-center" style="padding-bottom:10px;">@ViewBag.Title</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
+<p class="text-center">
+    @Html.ActionLink("Add a New Status", "Create", null, new { @class = "btn btn-primary" })
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.TicketStatusName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TicketStatusDescription)
-        </th>
-        <th></th>
-    </tr>
+<div class="container">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4">
+            <div class="side-tb-entry">
+                <div class="side-tb-header">
+                   <h4>@Html.DisplayFor(modelItem => item.TicketStatusName)</h4>
+                </div>
+                <div class="side-tb-body">
+                    @Html.DisplayFor(modelItem => item.TicketStatusDescription)
+                </div>
+                <div class="side-tb-footer">
+                    @Html.ActionLink("Edit", "Edit", new { id = item.TicketStatusID },  new { @class = "btn btn-primary" }) 
+                </div>
+            </div>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.TicketStatusName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TicketStatusDescription)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.TicketStatusID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.TicketStatusID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.TicketStatusID })
-        </td>
-    </tr>
-}
+        </div>
 
-</table>
+    }
+
+</div>

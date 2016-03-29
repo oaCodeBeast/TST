@@ -1,95 +1,335 @@
 ﻿@model IEnumerable<TST.DAL.TSTTicket>
-
+@using Microsoft.AspNet.Identity
+@using TST.DAL
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Open Tickets";
+
+    TSTEntities db = new TSTEntities();
+    var currentUserId = User.Identity.GetUserId();
+
+    //create user employee relationship by matching user id to user id of employee
+
+    TSTEmployee e = db.TSTEmployees.FirstOrDefault(x => x.EmpUserID == currentUserId);
+
+    @*Linq statements *@
+
+var openTickets = Model.Where(t => t.TicketStatusID != 4).OrderBy(t => t.PriorityID);
+var resolvedTickets = Model.Where(t => t.TicketStatusID == 4).OrderBy(t => t.TicketResolved);
 }
 @section styles{
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/t/bs/dt-1.10.11,af-2.1.1,b-1.1.2,fh-3.1.1,kt-2.1.1,r-2.0.2,se-1.1.2/datatables.min.css" />
 
-    }
-<h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table id="tbTickets" class="table" >
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.TicketSubject)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TicketDescription)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TicketSubmitted)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TicketResolved)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Image)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TSTEmployee.EmpFname)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TSTEmployee1.EmpFname)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TSTPriorite.PriorityName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TSTTicketStatus.TicketStatusName)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TicketSubject)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TicketDescription)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TicketSubmitted)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TicketResolved)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Image)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TSTEmployee.EmpFname)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TSTEmployee1.EmpFname)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TSTPriorite.PriorityName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TSTTicketStatus.TicketStatusName)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.TicketID }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.TicketID })
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+}
+<div class="container ticks-wrapper">
+    <h2 class="text-center">@ViewBag.Title</h2>
 
-@section Scripts{
-    <script>$(document).ready(function () {
-    $('#tbTickets').DataTable({
-        colReorder: true,
-        keys: true
-    });
-});</script>
-    } 
+
+    <div class="tick-navbar">
+        <div class="col-md-8 priority-key">
+            <div class="priority-wrapper">
+                <div class="priority low"></div>
+                <p>Low</p>
+            </div>
+            <div class="priority-wrapper">
+                <div class="priority medium"></div>
+
+                <p>Medium</p>
+            </div>
+            <div class="priority-wrapper">
+                <div class="priority high"></div>
+                <p>High</p>
+
+            </div>
+            <div class="priority-wrapper">
+                <div class="priority very-high-outer">
+                    <div class="priority-very-high"></div>
+                </div><p style="margin-top:4px">Very High</p>
+            </div>
+        </div>
+
+
+
+
+
+        <ul class="nav nav-pills ticks-nav col-md-4">
+            <li role="presentation" class="active"><a href="#1" data-toggle="tab">Active Tickets</a></li>
+            @if (Request.IsAuthenticated)
+            {
+
+
+                <li role="presentation"><a href="#2" data-toggle="tab">Resolved</a></li>
+                @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary " })
+
+            }
+        </ul>
+    </div>
+   
+    <div class="tab-content ticks-secondary-wrapper">
+        <div class="tab-pane active" id="1">
+
+            @foreach (var item in openTickets)
+            {
+                <div class="col-md-4">
+                    <div class="ticket-listing">
+                        <div class="ticket-header">
+                            @switch (item.PriorityID)
+                {
+                    case 1: <div class="priority low"></div>
+                                    break;
+                                case 2: <div class="priority medium"></div>
+                                    break;
+                                case 3: <div class="priority high"></div>
+                                    break;
+                                default:   <div class="priority very-high-outer">
+                                <div class="priority-very-high"></div>
+                            </div>
+                                    break;
+                            }
+                            <h4>@Html.DisplayFor(modelItem => item.TicketSubject)</h4>
+                            <p>ID:@Html.DisplayFor(modelItem => item.GetUniqueId)</p>
+                        </div>
+                        <div class="ticket-body">
+
+                            @if (item.TSTEmployee1 != null)
+                {
+                                <div class="col-md-6 sub-emp">
+                                    <p>Submitted By</p>
+                                    <a href="@Url.Action("Details", new { id = item.TSTEmployee.EmpID })">
+                                        <img class="img-circle ticket-emp-img" src="~/Content/TSTUserImages/@Html.DisplayFor(modelItem => item.TSTEmployee.EmpPhoto)" />
+                                    </a>
+                                    <a href="@Url.Action("Details", new { id = item.TSTEmployee.EmpID })">
+                                        <h4>@Html.DisplayFor(modelItem => item.TSTEmployee.EmpFname)</h4>
+                                    </a>
+                                    <p>@Html.DisplayFor(modelItem => item.GetDateAndHourSubmitted)</p>
+
+                                </div>
+                                <div class="col-md-6 tech-emp">
+                                    @switch (item.TicketStatusID)
+                                    {
+                                        case 2:
+                                            <p>@Html.DisplayFor(modelItem => item.TSTTicketStatus.TicketStatusName) to</p>
+                                            break;
+                                        case 3:<p>In Progress</p>
+                                            break;
+                                        case 4:
+                                            <p>@Html.DisplayFor(modelItem => item.TSTTicketStatus.TicketStatusName) by</p>
+                                            break;
+                                        default:
+                                            break;
+                                    }
+
+                                    <a href="@Url.Action("Details", new { id = item.TSTEmployee1.EmpID })">
+                                        <img class="img-circle ticket-emp-img" src="~/Content/TSTUserImages/@Html.DisplayFor(modelItem => item.TSTEmployee1.EmpPhoto)" />
+                                    </a>
+                                    <a href="@Url.Action("Details", new { id = item.TSTEmployee1 })">
+                                        <h4>@Html.DisplayFor(modelItem => item.TSTEmployee1.EmpFname)</h4>
+                                    </a>
+
+                                    @if (item.TicketStatusID == 4)
+                                    {
+                                        <p>@Html.DisplayFor(modelItem => item.GetDateAndHourResolved)</p>
+                                    }
+
+
+
+                                </div>
+                                <div class="clearfix"></div>
+                            }
+                            else
+                            {
+                                <div class="col-md-12 sub-emp">
+                                    <p>Submitted By</p>
+                                    <a href="@Url.Action("Details", new { id = item.TSTEmployee.EmpID })">
+                                        <img class="img-circle ticket-emp-img" src="~/Content/TSTUserImages/@Html.DisplayFor(modelItem => item.TSTEmployee.EmpPhoto)" />
+                                    </a>
+                                    <a href="@Url.Action("Details", new { id = item.TSTEmployee.EmpID })">
+                                        <h4>@Html.DisplayFor(modelItem => item.TSTEmployee.EmpFname)</h4>
+                                    </a>
+                                    <p>@Html.DisplayFor(modelItem => item.GetDateAndHourSubmitted)</p>
+
+
+                                </div>
+                                <div class="clearfix"></div>
+                            }
+                        </div>
+                        <div class="ticket-footer">
+
+                            @Html.ActionLink("Details", "Details", new { id = item.TicketID }, new { @class = "btn btn-primary" })
+                            @if (Request.IsAuthenticated)
+                            {
+
+                                if (e.DepartmentID == 1 || e.DepartmentID == 3)
+                                {
+                                    switch (item.TicketStatusID)
+                                    {
+                                        case 1:
+                                            //assign ticket
+                                            @Html.ActionLink("Edit", "Edit", new { id = item.TicketID }, new { @class = "btn btn-primary" })
+                                            @Html.ActionLink("Assign", "Delete", new { id = item.TicketID }, new { @class = "btn btn-primary" })
+
+                                            break;
+                                        case 2:
+                                            //move it to in progress status
+                                            @Html.ActionLink("Edit", "Edit", new { id = item.TicketID }, new { @class = "btn btn-primary" })
+                                            @Html.ActionLink("Escalate", "Delete", new { id = item.TicketID }, new { @class = "btn btn-primary" })
+                                            break;
+                                        case 3:
+                                            //resolve the ticket
+                                            @Html.ActionLink("Edit", "Edit", new { id = item.TicketID }, new { @class = "btn btn-primary" })
+                                            @Html.ActionLink("Resolve", "Delete", new { id = item.TicketID }, new { @class = "btn btn-success" })
+                                            break;
+                                        case 4:
+                                            //reopen ticket
+
+                                            @Html.ActionLink("Reopen", "Delete", new { id = item.TicketID }, new { @class = "btn btn-danger" })
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+                            }
+
+                        </div>
+                    </div>
+
+                </div>
+            }
+            <div class="clearfix"></div>
+        </div>
+        <div class="tab-pane" id="2">
+
+            @foreach (var item in resolvedTickets)
+            {
+                <div class="col-md-4">
+                    <div class="ticket-listing">
+                        <div class="ticket-header">
+                            @switch (item.PriorityID)
+                {
+                    case 1: <div class="priority low"></div>
+                                    break;
+                                case 2: <div class="priority medium"></div>
+                                    break;
+                                case 3: <div class="priority high"></div>
+                                    break;
+                                default:   <div class="priority very-high-outer">
+                                <div class="priority-very-high"></div>
+                            </div>
+                                    break;
+                            }
+                            <h3>@Html.DisplayFor(modelItem => item.TicketSubject)</h3>
+
+                        </div>
+                        <div class="ticket-body">
+
+                            @if (item.TSTEmployee1 != null)
+                {
+                            <div class="col-md-6 sub-emp">
+                                <p>Submitted By</p>
+                                <a href="@Url.Action("Details", new { id = item.TSTEmployee.EmpID })">
+                                    <img class="img-circle ticket-emp-img" src="~/Content/TSTUserImages/@Html.DisplayFor(modelItem => item.TSTEmployee.EmpPhoto)" />
+                                </a>
+                                <a href="@Url.Action("Details", new { id = item.TSTEmployee.EmpID })">
+                                    <h4>@Html.DisplayFor(modelItem => item.TSTEmployee.EmpFname)</h4>
+                                </a>
+                                <p>@Html.DisplayFor(modelItem => item.GetDateAndHourSubmitted)</p>
+
+                            </div>
+                            <div class="col-md-6 tech-emp">
+                                @switch (item.TicketStatusID)
+                                    {
+                                        case 2:
+                                    <p>@Html.DisplayFor(modelItem => item.TSTTicketStatus.TicketStatusName) to</p>
+                                            break;
+                                        case 3:<p>In Progress</p>
+                                            break;
+                                        case 4:
+                                    <p>@Html.DisplayFor(modelItem => item.TSTTicketStatus.TicketStatusName) by</p>
+                                            break;
+                                        default:
+                                            break;
+                                    }
+
+                                <a href="@Url.Action("Details", new { id = item.TSTEmployee1.EmpID })">
+                                    <img class="img-circle ticket-emp-img" src="~/Content/TSTUserImages/@Html.DisplayFor(modelItem => item.TSTEmployee1.EmpPhoto)" />
+                                </a>
+                                <a href="@Url.Action("Details", new { id = item.TSTEmployee1 })">
+                                    <h4>@Html.DisplayFor(modelItem => item.TSTEmployee1.EmpFname)</h4>
+                                </a>
+
+                                @if (item.TicketStatusID == 4)
+                                    {
+                                    <p>@Html.DisplayFor(modelItem => item.GetDateAndHourResolved)</p>
+                                    }
+
+
+
+                            </div>
+                            <div class="clearfix"></div>
+                            }
+                            else
+                            {
+                            <div class="col-md-12 sub-emp">
+                                <p>Submitted By</p>
+                                <a href="@Url.Action("Details", new { id = item.TSTEmployee.EmpID })">
+                                    <img class="img-circle ticket-emp-img" src="~/Content/TSTUserImages/@Html.DisplayFor(modelItem => item.TSTEmployee.EmpPhoto)" />
+                                </a>
+                                <a href="@Url.Action("Details", new { id = item.TSTEmployee.EmpID })">
+                                    <h4>@Html.DisplayFor(modelItem => item.TSTEmployee.EmpFname)</h4>
+                                </a>
+                                <p>@Html.DisplayFor(modelItem => item.GetDateAndHourSubmitted)</p>
+
+
+                            </div>
+                            <div class="clearfix"></div>
+                            }
+                        </div>
+                        <div class="ticket-footer">
+
+                            @Html.ActionLink("Details", "Details", new { id = item.TicketID }, new { @class = "btn btn-primary" })
+                            @if (Request.IsAuthenticated)
+                            {
+
+                                if (e.DepartmentID == 1 || e.DepartmentID == 3)
+                                {
+                                    switch (item.TicketStatusID)
+                                    {
+                                        case 1:
+                                            //assign ticket
+                            @Html.ActionLink("Edit", "Edit", new { id = item.TicketID }, new { @class = "btn btn-primary" })
+                            @Html.ActionLink("Assign", "Delete", new { id = item.TicketID }, new { @class = "btn btn-primary" })
+
+                                            break;
+                                        case 2:
+                                            //move it to in progress status
+                            @Html.ActionLink("Edit", "Edit", new { id = item.TicketID }, new { @class = "btn btn-primary" })
+                            @Html.ActionLink("Escalate", "Delete", new { id = item.TicketID }, new { @class = "btn btn-primary" })
+                                            break;
+                                        case 3:
+                                            //resolve the ticket
+                            @Html.ActionLink("Edit", "Edit", new { id = item.TicketID }, new { @class = "btn btn-primary" })
+                            @Html.ActionLink("Resolve", "Delete", new { id = item.TicketID }, new { @class = "btn btn-success" })
+                                            break;
+                                        case 4:
+                                            //reopen ticket
+
+                            @Html.ActionLink("Reopen", "Delete", new { id = item.TicketID }, new { @class = "btn btn-danger" })
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+                            }
+
+                        </div>
+                    </div>
+
+                </div>
+            }
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+            @section Scripts{
+
+            }

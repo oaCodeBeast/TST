@@ -10,6 +10,7 @@ using TST.DAL;
 
 namespace TST.MVC.Controllers
 {
+    [Authorize(Roles = "Admin, Tech")]
     public class TSTPrioritesController : Controller
     {
         private TSTEntities db = new TSTEntities();
@@ -20,20 +21,7 @@ namespace TST.MVC.Controllers
             return View(db.TSTPriorites.ToList());
         }
 
-        // GET: TSTPriorites/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            TSTPriorite tSTPriorite = db.TSTPriorites.Find(id);
-            if (tSTPriorite == null)
-            {
-                return HttpNotFound();
-            }
-            return View(tSTPriorite);
-        }
+ 
 
         // GET: TSTPriorites/Create
         public ActionResult Create()
@@ -89,32 +77,7 @@ namespace TST.MVC.Controllers
             return View(tSTPriorite);
         }
 
-        // GET: TSTPriorites/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            TSTPriorite tSTPriorite = db.TSTPriorites.Find(id);
-            if (tSTPriorite == null)
-            {
-                return HttpNotFound();
-            }
-            return View(tSTPriorite);
-        }
-
-        // POST: TSTPriorites/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            TSTPriorite tSTPriorite = db.TSTPriorites.Find(id);
-            db.TSTPriorites.Remove(tSTPriorite);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
+ 
         protected override void Dispose(bool disposing)
         {
             if (disposing)

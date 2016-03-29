@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -39,10 +40,9 @@ namespace TST.MVC.Controllers
         // GET: TSTTickets/Create
         public ActionResult Create()
         {
-            ViewBag.SubmittedByID = new SelectList(db.TSTEmployees, "EmpID", "EmpFname");
-            ViewBag.TechID = new SelectList(db.TSTEmployees, "EmpID", "EmpFname");
-            ViewBag.PriorityID = new SelectList(db.TSTPriorites, "PriorityID", "PriorityName");
-            ViewBag.TicketStatusID = new SelectList(db.TSTTicketStatuses, "TicketStatusID", "TicketStatusName");
+        
+         
+        
             return View();
         }
 
@@ -55,6 +55,18 @@ namespace TST.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
+                var currentUserId = User.Identity.GetUserId();
+
+                //create user employee relationship by matching user id to user id of employee
+
+                TSTEmployee e = db.TSTEmployees.FirstOrDefault(x => x.EmpUserID == currentUserId);
+
+                tSTTicket.SubmittedByID = e.EmpID;
+                tSTTicket.TicketSubmitted = DateTime.Now;
+                tSTTicket.TicketStatusID = 1;
+                tSTTicket.Image = "Noimage.png";
+                tSTTicket.PriorityID = 1;
+
                 db.TSTTickets.Add(tSTTicket);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -79,10 +91,10 @@ namespace TST.MVC.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.SubmittedByID = new SelectList(db.TSTEmployees, "EmpID", "EmpFname", tSTTicket.SubmittedByID);
-            ViewBag.TechID = new SelectList(db.TSTEmployees, "EmpID", "EmpFname", tSTTicket.TechID);
+ 
+            ViewBag.TechID = new SelectList(db.TSTEmployees.Where(x => x.DepartmentID == 3), "EmpID", "EmpFname", tSTTicket.TechID);
             ViewBag.PriorityID = new SelectList(db.TSTPriorites, "PriorityID", "PriorityName", tSTTicket.PriorityID);
-            ViewBag.TicketStatusID = new SelectList(db.TSTTicketStatuses, "TicketStatusID", "TicketStatusName", tSTTicket.TicketStatusID);
+            ViewBag.TicketStatusID = new SelectList(db.TSTTicketStatuses.Where(x => x.TicketStatusID !=1), "TicketStatusID", "TicketStatusName", tSTTicket.TicketStatusID);
             return View(tSTTicket);
         }
 
@@ -99,10 +111,10 @@ namespace TST.MVC.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.SubmittedByID = new SelectList(db.TSTEmployees, "EmpID", "EmpFname", tSTTicket.SubmittedByID);
-            ViewBag.TechID = new SelectList(db.TSTEmployees, "EmpID", "EmpFname", tSTTicket.TechID);
+
+            ViewBag.TechID = new SelectList(db.TSTEmployees.Where(x => x.DepartmentID == 3), "EmpID", "EmpFname", tSTTicket.TechID);
             ViewBag.PriorityID = new SelectList(db.TSTPriorites, "PriorityID", "PriorityName", tSTTicket.PriorityID);
-            ViewBag.TicketStatusID = new SelectList(db.TSTTicketStatuses, "TicketStatusID", "TicketStatusName", tSTTicket.TicketStatusID);
+            ViewBag.TicketStatusID = new SelectList(db.TSTTicketStatuses.Where(x => x.TicketStatusID != 1), "TicketStatusID", "TicketStatusName", tSTTicket.TicketStatusID);
             return View(tSTTicket);
         }
 
@@ -127,7 +139,44 @@ namespace TST.MVC.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             TSTTicket tSTTicket = db.TSTTickets.Find(id);
-            db.TSTTickets.Remove(tSTTicket);
+            var currentUserId = User.Identity.GetUserId();
+
+            //create user employee relationship by matching user id to user id of employee
+
+            TSTEmployee e = db.TSTEmployees.FirstOrDefault(x => x.EmpUserID == currentUserId);
+            if(e.DepartmentID == 1 || e.DepartmentID == 3)
+            {
+                switch (tSTTicket.TicketStatusID)
+                {
+                    case 1:
+                        //assign ticket
+                        tSTTicket.TicketStatusID = 2;
+                        tSTTicket.TSTEmployee1 = e;
+                        break;
+                    case 2:
+                        tSTTicket.TicketStatusID = 3;
+                        //move it to in progress status
+                        break;
+                    case 3:
+                        tSTTicket.TicketStatusID = 4;
+                        //resolve the ticket
+                        tSTTicket.TicketResolved = DateTime.Now;
+                        tSTTicket.PriorityID = 1;
+                        break;
+                    case 4:
+                        tSTTicket.TicketStatusID = 1;
+                        //reopen ticket un asssign from tech. Put in very high priority
+                        tSTTicket.TechID = null;
+                        tSTTicket.PriorityID = 4;
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+       
+
+
             db.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -265,6 +265,7 @@
     <Content Include="Content\themes\base\tabs.css" />
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
+    <Content Include="Content\TSTTickets\Noimage.png" />
     <Content Include="Content\TSTUserImages\noPhoto.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
@@ -357,13 +358,10 @@
     <Content Include="Views\RolesAdmin\Create.cshtml" />
     <Content Include="Views\Account\DisplayEmail.cshtml" />
     <Content Include="Views\TSTEmployeeStatus\Create.cshtml" />
-    <Content Include="Views\TSTEmployeeStatus\Delete.cshtml" />
-    <Content Include="Views\TSTEmployeeStatus\Details.cshtml" />
     <Content Include="Views\TSTEmployeeStatus\Edit.cshtml" />
     <Content Include="Views\TSTEmployeeStatus\Index.cshtml" />
     <Content Include="Views\TSTDepartments\Create.cshtml" />
     <Content Include="Views\TSTDepartments\Delete.cshtml" />
-    <Content Include="Views\TSTDepartments\Details.cshtml" />
     <Content Include="Views\TSTDepartments\Edit.cshtml" />
     <Content Include="Views\TSTDepartments\Index.cshtml" />
     <Content Include="Views\TSTEmployees\Create.cshtml" />
@@ -377,13 +375,9 @@
     <Content Include="Views\TSTTickets\Edit.cshtml" />
     <Content Include="Views\TSTTickets\Index.cshtml" />
     <Content Include="Views\TSTPriorites\Create.cshtml" />
-    <Content Include="Views\TSTPriorites\Delete.cshtml" />
-    <Content Include="Views\TSTPriorites\Details.cshtml" />
     <Content Include="Views\TSTPriorites\Edit.cshtml" />
     <Content Include="Views\TSTPriorites\Index.cshtml" />
     <Content Include="Views\TSTTicketStatus\Create.cshtml" />
-    <Content Include="Views\TSTTicketStatus\Delete.cshtml" />
-    <Content Include="Views\TSTTicketStatus\Details.cshtml" />
     <Content Include="Views\TSTTicketStatus\Edit.cshtml" />
     <Content Include="Views\TSTTicketStatus\Index.cshtml" />
     <Content Include="Scripts\underscore-min.map" />

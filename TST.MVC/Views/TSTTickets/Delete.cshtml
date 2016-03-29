@@ -1,12 +1,36 @@
 ﻿@model TST.DAL.TSTTicket
 
 @{
+
+    switch (Model.TicketStatusID)
+    {
+        case 1:
+            ViewBag.Title = "Assign Ticket ID: " + Model.GetUniqueId;
+            break;
+        case 2:
+            //move it to in progress status
+            ViewBag.Title = "Begin working Ticket ID: " + Model.GetUniqueId;
+            break;
+        case 3:
+            //resolve the ticket
+            ViewBag.Title = "Resolve working Ticket ID: " + Model.GetUniqueId;
+            break;
+        case 4:
+            //reopen ticket
+
+            ViewBag.Title = "Re-Open working Ticket ID: " + Model.GetUniqueId;
+            break;
+        default:
+            break;
+    }
+
+
     ViewBag.Title = "Delete";
 }
 
-<h2>Delete</h2>
+<h2>@ViewBag.Title</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+
 <div>
     <h4>TSTTicket</h4>
     <hr />

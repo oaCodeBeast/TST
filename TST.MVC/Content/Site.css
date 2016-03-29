@@ -402,8 +402,8 @@ a:hover {
     border-radius: 25%;
 }
 
-.ui-datepicker-year {
-    color: #fff;
+.dob .ui-datepicker-year {
+    
 }
 /*Login partial*/
 .loggedinpic {
@@ -593,24 +593,7 @@ a:hover {
 .ticket-status {
 }
 
-.myTicketsWrapper .ticket-priority-high {
-    /*width: 50px;
-    height: 50px;
-    float: right;
-    text-align: center;
-    background-color: rgba(0,0,0, 0);
-    border-radius: 50%;
-    display: inline-block;
-    position: absolute;
-    padding: 3px;
-    margin: -4px 0px 0px 210px;
-    border-top: rgba(251, 255, 0, 0);
-    border-left: #EB0909;
-    border-bottom: rgba(239, 16, 16, 0);
-    border-right: #EB0909;
-    border-style: solid double;
-    border-width: 0.5em;*/
-}
+
 
 .ticket-tech {
     width: 15%;
@@ -724,3 +707,207 @@ a:hover {
 .side-tb-textarea{
     resize:none;
 }
+
+/*Priorities*/
+.low{
+    
+   background-color: #ADFF2A;
+   
+    border-radius: 50%;
+   border-bottom: double;
+    border-right: double;
+    border-left: double;
+     border-top: groove;
+  
+     border-color: #61E41E;
+     
+}
+.medium{
+    
+      background-color: #E8FF2A;
+    display: inline-block;
+    border-radius: 50%;
+      border-bottom: double;
+    border-right: double;
+    border-left: double;
+    border-top: groove;
+    border-width: 6px;
+       border-color: #D28B21;
+        
+}
+.high{
+
+       background-color: #FF792A;
+    display: inline-block;
+    border-radius: 50%;
+    border-bottom: double;
+    border-right: double;
+    border-left: double;
+    border-top: groove;
+    border-width: 6px;
+    border-color: #F70F0F;
+  
+}
+.priority-very-high{
+    width: 100%;
+    height: 100%;
+    background-color: #E8EB12;
+    display: inline-block;
+    border-radius: 50%;
+    border-bottom: solid;
+    border-right: double;
+    border-left: double;
+    border-top: solid;
+    border-width: 6px;
+    border-color: #FF0707;
+   
+}
+
+.very-high-outer{
+
+    background-color: #EBD117;
+    display: inline-block;
+    border-radius: 50%;
+    border-bottom: double;
+    border-right: solid;
+    border-left: solid;
+    border-top: double;
+    border-width: 6px;
+    border-color: #FB3204;
+    
+}
+.priority{
+    float:right;
+          width: 30px;
+    height: 30px;
+     display: inline-block;
+       border-width: 6px;
+}
+.priority-key{
+       float:right;
+}
+.priority-key .priority
+{
+    float:none;
+}
+.priority-wrapper{
+    width:25%;
+    float:left;
+    text-align:center;
+}
+
+/*Mobile*/
+@media (max-width:992px)
+{
+    .form-control{
+            margin: 10px auto;
+    }
+    .emps-nav li{
+        width:100px;
+    }
+}
+@media(max-width:650px) {
+    .emps-nav a.btn {
+        width: 100%;
+        float:none;
+    }
+    .emps-nav li {
+    width: 100%;
+}
+    .emps-nav li a{
+        border-radius: 4px 4px;
+    }
+}
+/*Tickets Index*/
+.ticks-wrapper{
+    margin-top: 30px;
+}
+.ticket-listing{
+      padding: 15px;
+    margin-top: 10px;
+    border-top: solid 2px #c1c6d0;
+    border-left: solid 2px #c1c6d0;
+    border-bottom: solid 2px #6b7485;
+    border-right: solid 2px #6b7485;
+    background-color: #fff;
+    border-radius: 5px 15px;
+        box-shadow: 3px 3px rgba(30,30,30, 0.2);
+}
+.ticket-header{
+         border-bottom: 1px solid rgba(151, 150, 150, 0.48);
+             padding: 10px;
+ }
+ .ticket-header h3{
+     clear:both;
+ }
+ .ticket-body{
+     margin-top:10px;
+ }
+ .ticket-emp-img{
+         width: 75px;
+    height: 75px;
+    border: 5px solid rgba(10,10,56, .85);
+    background-color: rgba(10,10,56, .85);
+    position: relative;
+ }
+ .sub-emp{
+     text-align:center;
+ }
+ .sub-emp h4{
+         color: #1C16B4;
+             font-size: 24px;
+ }
+ .tech-emp{
+     text-align:center;
+ }
+ .tech-emp h4{
+      color: #1C16B4;
+          font-size: 24px;
+ }
+ .ticket-body p:first-child {
+       font-size: 15px;
+ }
+ .ticket-body p:last-child{
+       font-style: italic;
+    color: #1330A5;
+ }
+ .ticket-footer{
+     text-align:center;
+     border-top:1px solid rgba(151, 150, 150, 0.48);
+        padding-top: 10px;
+ }
+ .ticket-footer a:last-child{
+     
+
+
+
+    margin-left: 3px;
+
+ }
+ .ticks-nav a.btn{
+         padding: 8.8px 15px;
+         margin-left: 3px;
+ }
+ .ticks-nav{
+        
+ }
+ .tick-navbar{
+      padding: 15px;
+    margin-top: 10px;
+    border-top: solid 2px #c1c6d0;
+    border-left: solid 2px #c1c6d0;
+    border-bottom: solid 2px #6b7485;
+    border-right: solid 2px #6b7485;
+    background-color: #fff;
+    border-radius: 5px 15px;
+    height:75px;
+ 
+ 
+  
+    width: 97%;
+    position: relative;
+    margin: 0 16px;
+
+
+    box-shadow: 3px 3px rgba(30,30,30, 0.2);
+ }

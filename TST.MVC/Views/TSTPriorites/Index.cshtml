@@ -1,39 +1,51 @@
 ﻿@model IEnumerable<TST.DAL.TSTPriorite>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "All Ticket Priorities";
 }
 
-<h2>Index</h2>
+<h2 class="text-center" style="padding-bottom:10px;">@ViewBag.Title</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
+
+<p class="text-center">
+    @Html.ActionLink("Add a New Priority", "Create", null, new { @class = "btn btn-primary" })
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.PriorityName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PriorityDescription)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.PriorityName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PriorityDescription)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.PriorityID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.PriorityID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.PriorityID })
-        </td>
-    </tr>
-}
+<div class="container">
+    @foreach (var item in Model)
+    {
 
-</table>
+
+        <div class="col-md-4">
+            <div class="side-tb-entry">
+                <div class="side-tb-header">
+                    <h4>@Html.DisplayFor(modelItem => item.PriorityName)</h4>
+                    @switch (item.PriorityID)
+                    {
+                        case 1: <div class="priority low"></div>
+                            break;
+                        case 2: <div class="priority medium"></div>
+                            break;
+                        case 3: <div class="priority high"></div>
+                            break;
+                        default:
+                            
+                            <div class="priority very-high-outer">
+                                <div class="priority-very-high"></div>
+                    </div>
+                            break;
+                    }
+                </div>
+                <div class="side-tb-body">
+                    @Html.DisplayFor(modelItem => item.PriorityDescription)
+                </div>
+                <div class="side-tb-footer">
+                    @Html.ActionLink("Edit", "Edit", new { id = item.PriorityID }, new { @class = "btn btn-primary" })
+                </div>
+            </div>
+
+        </div>
+
+    }
+
+        </div>

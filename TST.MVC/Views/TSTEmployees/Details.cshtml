@@ -11,10 +11,6 @@
     //create user employee relationship by matching user id to user id of employee
 
     TSTEmployee e = db.TSTEmployees.FirstOrDefault(x => x.EmpUserID == currentUserId);
-
-    //var myTickets = ViewBag.PassMyTickets;
-    //db.TSTTickets.Include(t => t.TSTEmployee).Include(t => t.TSTEmployee1)
-    //    .Include(t => t.TSTPriorite).Include(t => t.TSTTicketStatus).Where(t => t.TSTEmployee.EmpID == id).Where(t => t.TicketStatusID != 4);
     IEnumerable<TSTTicket> z = ViewBag.PassMyTickets;
     var myTickets = z.Where(h => h.SubmittedByID == Model.EmpID).Where(h => h.TicketStatusID != 4);
     //grab list of tickets
@@ -484,6 +480,10 @@
                         <div class="myTicketsWrapper">
                             <h2 class="text-center">My Support Tickets</h2>
                             <div class="ticket-headers">
+                                <div class="header-subject"></div>
+                                <div class="header-description">
+                                </div>
+                                <div class="header-tech"></div>
                                 @foreach (var item in myTickets)
                                 {
                                     <div class="ticket-entry row" id="@Html.DisplayFor(modelItem => item.TicketID )">
@@ -502,13 +502,16 @@
                                             <div class="clearfix"></div>
                                         </div>
 
+                                        @if (item.TSTEmployee1 != null)
+                                        {
+                                            <div class="ticket-tech">
+                                                <a title="@Html.DisplayFor(modelItem => item.TSTEmployee1.EmpFname)" href="@Url.Action("Details",new { id=item.TSTEmployee1.EmpID })">
+                                                    <img class="loggedinpic" id="ticketTechImg" src="~/Content/TSTUserImages/@Html.DisplayFor(modelItem => item.TSTEmployee1.EmpPhoto)" />
 
-                                        <div class="ticket-tech">
-                                            <a title="@Html.DisplayFor(modelItem => item.TSTEmployee1.EmpFname)" href="@Url.Action("Details",new { id=item.TSTEmployee1.EmpID })">
-                                                <img class="loggedinpic" id="ticketTechImg" src="~/Content/TSTUserImages/@Html.DisplayFor(modelItem => item.TSTEmployee1.EmpPhoto)" />
-
-                                            </a>
-                                        </div>
+                                                </a>
+                                            </div>
+                                        }
+                                   
                                         <div class="clearfix"></div>
                                     </div>
 
@@ -618,141 +621,4 @@
             </script>
 
         }
-        @*<div>
-                <h4>TSTEmployee</h4>
-                <hr />
-                <dl class="dl-horizontal">
-                    <dt>
-                        @Html.DisplayNameFor(model => model.EmpFname)
-                    </dt>
-
-                    <dd>
-                        @Html.DisplayFor(model => model.EmpFname)
-                    </dd>
-
-                    <dt>
-                        @Html.DisplayNameFor(model => model.EmpLname)
-                    </dt>
-
-                    <dd>
-                        @Html.DisplayFor(model => model.EmpLname)
-                    </dd>
-
-                    <dt>
-                        @Html.DisplayNameFor(model => model.EmpAddress1)
-                    </dt>
-
-                    <dd>
-                        @Html.DisplayFor(model => model.EmpAddress1)
-                    </dd>
-
-                    <dt>
-                        @Html.DisplayNameFor(model => model.EmpAddress2)
-                    </dt>
-
-                    <dd>
-                        @Html.DisplayFor(model => model.EmpAddress2)
-                    </dd>
-
-                    <dt>
-                        @Html.DisplayNameFor(model => model.EmpCity)
-                    </dt>
-
-                    <dd>
-                        @Html.DisplayFor(model => model.EmpCity)
-                    </dd>
-
-                    <dt>
-                        @Html.DisplayNameFor<h2>Details</h2>(model => model.EmpState)
-                    </dt>
-
-                    <dd>
-                        @Html.DisplayFor(model => model.EmpState)
-                    </dd>
-
-                    <dt>
-                        @Html.DisplayNameFor(model => model.EmpPhoto)
-                    </dt>
-
-                    <dd>
-                        @Html.DisplayFor(model => model.EmpPhoto)
-                    </dd>
-
-                    <dt>
-                        @Html.DisplayNameFor(model => model.EmpUserID)
-                    </dt>
-
-                    <dd>
-                        @Html.DisplayFor(model => model.EmpUserID)
-                    </dd>
-
-                    <dt>
-                        @Html.DisplayNameFor(model => model.EmpDateOfBirth)
-                    </dt>
-
-                    <dd>
-                        @Html.DisplayFor(model => model.EmpDateOfBirth)
-                    </dd>
-
-                    <dt>
-                        @Html.DisplayNameFor(model => model.EmpDateOfHire)
-                    </dt>
-
-                    <dd>
-                        @Html.DisplayFor(model => model.EmpDateOfHire)
-                    </dd>
-
-                    <dt>
-                        @Html.DisplayNameFor(model => model.EmpEndDate)
-                    </dt>
-
-                    <dd>
-                        @Html.DisplayFor(model => model.EmpEndDate)
-                    </dd>
-
-                    <dt>
-                        @Html.DisplayNameFor(model => model.EmpPhone)
-                    </dt>
-
-                    <dd>
-                        @Html.DisplayFor(model => model.EmpPhone)
-                    </dd>
-
-                    <dt>
-                        @Html.DisplayNameFor(model => model.EmpEmail)
-                    </dt>
-
-                    <dd>
-                        @Html.DisplayFor(model => model.EmpEmail)
-                    </dd>
-
-                    <dt>
-                        @Html.DisplayNameFor(model => model.EmpNotes)
-                    </dt>
-
-                    <dd>
-                        @Html.DisplayFor(model => model.EmpNotes)
-                    </dd>
-
-                    <dt>
-                        @Html.DisplayNameFor(model => model.TSTDepartment.DepartmentName)
-                    </dt>
-
-                    <dd>
-                        @Html.DisplayFor(model => model.TSTDepartment.DepartmentName)
-                    </dd>
-
-                    <dt>
-                        @Html.DisplayNameFor(model => model.TSTEmployeeStatus.EmpStatusName)
-                    </dt>
-
-                    <dd>
-                        @Html.DisplayFor(model => model.TSTEmployeeStatus.EmpStatusName)
-                    </dd>
-
-                </dl>
-            </div>
-            <p>
-                @Html.ActionLink("Edit", "Edit", new { id = Model.EmpID }) |
-                @Html.ActionLink("Back to List", "Index")
-            </p>*@
+     

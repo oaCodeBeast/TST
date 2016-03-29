@@ -50,7 +50,7 @@
                             <ul class="dropdown-menu">
                                 @* Tech and admin *@
                                 <li>@Html.ActionLink("Ticket Statuses", "Index", "TSTTicketStatus")</li>
-                                <li>@Html.ActionLink("Priority Statuses", "Index", "TSTPriorites")</li>
+                                <li>@Html.ActionLink("Priorities", "Index", "TSTPriorites")</li>
                             </ul>
                         </li>
                         if (User.IsInRole("Tech"))
@@ -60,12 +60,12 @@
                     }
                     else
                     {
-                        if (Request.IsAuthenticated && User.IsInRole("Admin"))
+                        if (Request.IsAuthenticated && User.IsInRole("Admin") || User.IsInRole("HR"))
                         {
                             <li class="dropdown">
                                 <a href="@Url.Action("Index", "TSTEmployees")">All users <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    @* Admin only *@
+                                    @* Admin only  and HR*@
                                     <li>@Html.ActionLink("User Statuses", "Index", "TSTEmployeeStatus")</li>
                                     <li>@Html.ActionLink("User Departments", "Index", "TSTDepartments")</li>
                                 </ul>
@@ -121,7 +121,7 @@
     @RenderSection("modals", required: false)
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    @*<script type="text/javascript" src="https://cdn.datatables.net/t/dt/dt-1.10.11,af-2.1.1,b-1.1.2,b-colvis-1.1.2,cr-1.3.1,fh-3.1.1,kt-2.1.1,r-2.0.2,rr-1.1.1,sc-1.4.1,se-1.1.2/datatables.min.js"></script>*@
+
      @RenderSection("scripts", required: false)
 </body>
 </html>

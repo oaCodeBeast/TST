@@ -97,9 +97,10 @@ namespace TST.DAL
         {
             get
             {
-                return EmpCity + "," + EmpState;
+                return EmpCity + ", " + EmpState;
             }
         }
+       
    
 
     }
@@ -180,7 +181,28 @@ namespace TST.DAL
     [MetadataType(typeof(TSTTicketMetaData))]
     public partial class TSTTicket
     {
+        public string GetDateAndHourSubmitted
+        {
+            get {
 
+                return String.Format("on: {0:MM/dd HH:mm}", TicketSubmitted);
+            }    
+        }
+        public string GetDateAndHourResolved
+        {
+            get
+            {
+                return String.Format("on: {0:MM/dd HH:mm}", TicketResolved);
+            }
+        }
+        public string GetUniqueId
+        {
+            get
+            {
+                return String.Format("{0}{1}{2}", TSTEmployee.EmpLname.Substring(0,1).ToUpper(), TSTEmployee.EmpFname.Substring(0, 1).ToUpper(), 
+                    TSTEmployee.EmpUserID.Substring(0, 6).ToUpper());
+            }
+        }
     }
 
     #endregion

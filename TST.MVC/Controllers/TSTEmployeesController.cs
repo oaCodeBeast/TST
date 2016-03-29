@@ -53,7 +53,7 @@ namespace TST.MVC.Controllers
         }
 
         // GET: TSTEmployees/Create
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, HR")]
         public ActionResult Create()
         {
             var RoleManager = HttpContext.GetOwinContext().Get<ApplicationRoleManager>();
@@ -62,7 +62,7 @@ namespace TST.MVC.Controllers
             ViewBag.RoleID = new SelectList(RoleManager.Roles.ToList(), "Name", "Name");
 
             //will eventually populate a checkboxlist
-         
+            ViewBag.State = new SelectList(GetProvincesList());
             ViewBag.DepartmentID = new SelectList(db.TSTDepartments, "DepartmentID", "DepartmentName");
             ViewBag.EmpStatusID = new SelectList(db.TSTEmployeeStatuses, "EmpStatusID", "EmpStatusName");
             return View();
@@ -78,7 +78,7 @@ namespace TST.MVC.Controllers
         {
             ModelState.Clear();
             //programmatically generate email from first letter of first name + lname@greendale.com
-            string email = tSTEmployee.EmpFname.ToLower().First() + tSTEmployee.EmpLname.ToLower() + "@greendale.com";
+            string email = tSTEmployee.EmpFname.ToLower().First() + tSTEmployee.EmpLname.ToLower() + tSTEmployee.EmpPhone.Substring((tSTEmployee.EmpPhone.Length - 4)) + "@greendale.com";
             tSTEmployee.EmpEmail = email;
             //ModelState.Add()
             //ModelState.
@@ -161,7 +161,7 @@ namespace TST.MVC.Controllers
              
 
             var RoleManager = HttpContext.GetOwinContext().Get<ApplicationRoleManager>();
-
+            ViewBag.State = new SelectList(GetProvincesList());
 
             ViewBag.RoleID = new SelectList(RoleManager.Roles.ToList(), "Name", "Name");
 
@@ -184,7 +184,7 @@ namespace TST.MVC.Controllers
             {
                 return HttpNotFound();
             }
-
+            ViewBag.State = new SelectList(GetProvincesList());
             if( tSTEmployee.DepartmentID == 6)
             {
                 ViewBag.EmpStatusID = new SelectList(db.TSTEmployeeStatuses.Where(s => s.EmpStatusID.Equals(2) || s.EmpStatusID.Equals(4) || s.EmpStatusID.Equals(6)), "EmpStatusID", "EmpStatusName", tSTEmployee.EmpStatusID);
@@ -282,6 +282,7 @@ namespace TST.MVC.Controllers
                 ViewBag.DepartmentID = new SelectList(db.TSTDepartments.Where(d => d.DepartmentID != tSTEmployee.DepartmentID).Where(d => d.DepartmentID != 6), "DepartmentID", "DepartmentName", tSTEmployee.DepartmentID);
 
             }
+            ViewBag.State = new SelectList(GetProvincesList());
             return View(tSTEmployee);
         }
 
@@ -482,6 +483,65 @@ namespace TST.MVC.Controllers
 
             return null;
 
+        }
+
+        public static IEnumerable<SelectListItem> GetProvincesList()
+        {
+            IList<SelectListItem> items = new List<SelectListItem>
+            {
+        new SelectListItem() {Text="Alabama", Value="AL"},
+        new SelectListItem() { Text="Alaska", Value="AK"},
+        new SelectListItem() { Text="Arizona", Value="AZ"},
+        new SelectListItem() { Text="Arkansas", Value="AR"},
+        new SelectListItem() { Text="California", Value="CA"},
+        new SelectListItem() { Text="Colorado", Value="CO"},
+        new SelectListItem() { Text="Connecticut", Value="CT"},
+        new SelectListItem() { Text="District of Columbia", Value="DC"},
+        new SelectListItem() { Text="Delaware", Value="DE"},
+        new SelectListItem() { Text="Florida", Value="FL"},
+        new SelectListItem() { Text="Georgia", Value="GA"},
+        new SelectListItem() { Text="Hawaii", Value="HI"},
+        new SelectListItem() { Text="Idaho", Value="ID"},
+        new SelectListItem() { Text="Illinois", Value="IL"},
+        new SelectListItem() { Text="Indiana", Value="IN"},
+        new SelectListItem() { Text="Iowa", Value="IA"},
+        new SelectListItem() { Text="Kansas", Value="KS"},
+        new SelectListItem() { Text="Kentucky", Value="KY"},
+        new SelectListItem() { Text="Louisiana", Value="LA"},
+        new SelectListItem() { Text="Maine", Value="ME"},
+        new SelectListItem() { Text="Maryland", Value="MD"},
+        new SelectListItem() { Text="Massachusetts", Value="MA"},
+        new SelectListItem() { Text="Michigan", Value="MI"},
+        new SelectListItem() { Text="Minnesota", Value="MN"},
+        new SelectListItem() { Text="Mississippi", Value="MS"},
+        new SelectListItem() { Text="Missouri", Value="MO"},
+        new SelectListItem() { Text="Montana", Value="MT"},
+        new SelectListItem() { Text="Nebraska", Value="NE"},
+        new SelectListItem() { Text="Nevada", Value="NV"},
+        new SelectListItem() { Text="New Hampshire", Value="NH"},
+        new SelectListItem() { Text="New Jersey", Value="NJ"},
+        new SelectListItem() { Text="New Mexico", Value="NM"},
+        new SelectListItem() { Text="New York", Value="NY"},
+        new SelectListItem() { Text="North Carolina", Value="NC"},
+        new SelectListItem() { Text="North Dakota", Value="ND"},
+        new SelectListItem() { Text="Ohio", Value="OH"},
+        new SelectListItem() { Text="Oklahoma", Value="OK"},
+        new SelectListItem() { Text="Oregon", Value="OR"},
+        new SelectListItem() { Text="Pennsylvania", Value="PA"},
+        new SelectListItem() { Text="Rhode Island", Value="RI"},
+        new SelectListItem() { Text="South Carolina", Value="SC"},
+        new SelectListItem() { Text="South Dakota", Value="SD"},
+        new SelectListItem() { Text="Tennessee", Value="TN"},
+        new SelectListItem() { Text="Texas", Value="TX"},
+        new SelectListItem() { Text="Utah", Value="UT"},
+        new SelectListItem() { Text="Vermont", Value="VT"},
+        new SelectListItem() { Text="Virginia", Value="VA"},
+        new SelectListItem() { Text="Washington", Value="WA"},
+        new SelectListItem() { Text="West Virginia", Value="WV"},
+        new SelectListItem() { Text="Wisconsin", Value="WI"},
+        new SelectListItem() { Text="Wyoming", Value="WY"}
+            };
+            return items;
         }
     }
 }
