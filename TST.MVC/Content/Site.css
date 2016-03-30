@@ -160,6 +160,8 @@ h4 {
 
 footer {
     text-align: center;
+   
+   bottom:0px;
 }
 
 .second-nav {
@@ -204,6 +206,7 @@ footer {
     margin-left: 50px;
     padding: 25px;
     width: 475px;
+        display: inline-block;
 }
 
     .image-text .title a {
@@ -222,15 +225,16 @@ footer {
         }
 
 .documentation {
-}
-
-    .documentation article {
-        text-align: center;
+     
         background-color: #fff;
         border-top: solid 1px #D6D6D6;
         border-left: solid 1px #D6D6D6;
         border-bottom: solid 1px #818181;
         border-right: solid 1px #818181;
+}
+
+    .documentation article {
+      
     }
 
     .documentation p {
@@ -552,7 +556,7 @@ a:hover {
 }
 
 .ticket-entry {
-    background-color: #D6D6D6;
+    background-color: #EAEAEA;
     border-top: solid 1px #c1c6d0;
     border-left: solid 1px #c1c6d0;
     border-bottom: solid 1px #6b7485;
@@ -822,6 +826,12 @@ a:hover {
 .ticks-wrapper{
     margin-top: 30px;
 }
+.ticks-secondary-wrapper{
+    padding-top:10px;
+}
+.ticket-listing:first-child{
+    margin-top: 16px;
+}
 .ticket-listing{
       padding: 15px;
     margin-top: 10px;
@@ -910,4 +920,187 @@ a:hover {
 
 
     box-shadow: 3px 3px rgba(30,30,30, 0.2);
+ }
+ .tech-notes h2{
+     color:rgba(10,10,56, .85)
+ }
+ .tech-notes .controls .btn{
+         margin: 9px 5px;
+ }
+ .tech-note{
+    border-top: solid 2px #c1c6d0;
+    border-left: solid 2px #c1c6d0;
+    border-bottom: solid 2px #6b7485;
+    border-right: solid 2px #6b7485;
+    background-color: #fff;
+    border-radius: 5px 15px;
+        margin-bottom: 10px;
+ }
+ .tech-note-note{
+         padding: 5px;
+    padding-bottom: 0px;
+    font-size: 16px;
+ }
+ .tech-note-date{
+    padding: 0px;
+    margin-bottom: 4px;
+    font-style: italic;
+    font-size: 10px;
+    text-align: right;
+ }
+ .tech-note-tech-img{
+         width: 50px;
+    border-radius: 50%;
+    border: 1px solid #07119D;
+    margin: 6px 20px 0px 0px;
+    background-color: #0939AA;
+
+ }
+ .note-text{
+        border-top: solid 2px #c1c6d0;
+    border-left: solid 2px #c1c6d0;
+    border-bottom: solid 2px #6b7485;
+    border-right: solid 2px #6b7485;
+    background-color: #fff;
+    border-radius: 5px 15px;
+    max-width:none;
+ }
+
+ /*Details Tickets*/
+ .ticket-header-details{
+         margin-bottom: 25px;
+             border-bottom: 1px solid rgba(30,30,30, 0.2);
+ }
+ .ticket-header-details .priority{
+       float:none;
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    border-width: 6px;
+    /* margin-right: 9px; */
+    margin-left: 150px;
+    position: absolute;
+    margin-top: -30px;
+
+ }
+ .ticket-body-details{
+         margin-top: 10px;
+ }
+ .submitted-emp p{
+         font-size: 20px;
+ }
+  .tick-det-emp{
+    width:175px;
+    border-radius: 50%;
+    border: 3px solid #19296C;
+    position:relative;
+    background: #19296C;
+    margin-top: 10px;
+ }
+ .ticket-det-emp:hover{
+     transition:.6s;
+      border: 6px solid #D4E848;
+         background:  #D4E848;
+ }
+ .sub-name{
+         font-size: 1.9em;
+    color: #19296c;
+        margin-bottom: 10px;
+        
+    transition:.6s;
+ }
+ .sub-name:hover{
+     transition:.6s;
+     color:#07ed07;
+       
+    color: #D4E848;
+    background-color: #19296c;
+    padding: 5px 10px;
+    border-radius:5px 15px;
+ }
+ p.date-details{
+     margin-top:10px;
+     font-style:italic;
+         font-size: 15px;
+ }
+ .tick-img{
+         width: 200px;
+    border-top: solid 2px #c1c6d0;
+    border-left: solid 2px #c1c6d0;
+    border-bottom: solid 2px #6b7485;
+    border-right: solid 2px #6b7485;
+        margin-bottom: 10px;
+ }
+ .tick-footer .btn:last-child{
+      margin-left: 3px;
+
+ }
+ .ticket-details p {
+     font-size:16px;
+     margin-top:5px;
+ }
+ .assigned-tech p{
+     font-size:20px;
+ }
+ .ticket-details.unassigned p:first-child{
+         font-size: 24px;
+             margin-bottom: 35px;
+ }
+ .ticket-details strong{
+       color: #07ED07;
+    text-shadow: 1px 1px black;
+ }
+ /*Messenger?Hopefully?*/
+ .people-wrapper .collapse {
+  display: none;
+  visibility: hidden;
+}
+ .people-wrapper .collapse.in {
+  display: block;
+  visibility: visible;
+}
+ .people-wrapper tr.collapse.in {
+  display: table-row;
+}
+ .people-wrapper tbody.collapse.in {
+  display: table-row-group;
+}
+ .people-wrapper .collapsing {
+  position: relative;
+  height: 0;
+  overflow: hidden;
+  -webkit-transition-property: height, visibility;
+  transition-property: height, visibility;
+  -webkit-transition-duration: 0.8s;
+  transition-duration: 0.8s;
+  -webkit-transition-timing-function: linear;
+  transition-timing-function: linear;
+}
+ .people-wrapper .collapsing.width {
+  -webkit-transition-property: width, visibility;
+  transition-property: width, visibility;
+  width: 0;
+  height: auto;
+}
+ .list-for-messenger{
+         Display: inline-block;
+    position: absolute;
+    margin-left: 645px;
+    margin-top: 8px;
+ }
+ .people-wrapper{
+    position: absolute;
+    margin-left: -199px;
+    border-radius: 5px 15px;
+    margin-top: 10px;
+    text-align: center;
+    /* background-color: #D85F5F; */
+    background: #0A0A38;
+    background: -webkit-linear-gradient(left top, #0A0A38, #2A4DA8);
+    background: -o-linear-gradient(bottom right, #0A0A38, #2A4DA8);
+    background: -moz-linear-gradient(bottom right, #0A0A38, #2A4DA8);
+    background: linear-gradient(to bottom right, #0A0A38, #2A4DA8);
+ }
+ .well .col-md-3{
+     margin:-13px 0px 9px 0px;
  }

@@ -1,90 +1,326 @@
 ﻿@model TST.DAL.TSTTicket
-
+@using Microsoft.AspNet.Identity
+@using TST.DAL
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Ticket ID: " + Model.GetUniqueId + " Details";
+    string s = ViewBag.PassImg;
+    TSTEntities db = new TSTEntities();
+    var currentUserId = User.Identity.GetUserId();
+
+    //create user employee relationship by matching user id to user id of employee
+
+    TSTEmployee e = db.TSTEmployees.FirstOrDefault(x => x.EmpUserID == currentUserId);
+    //get the technotes for this ticket
+    
+
+}
+@section styles {
+    <style>
+                #ticketImage {
+            width: 250px;
+            height: 250px;
+            position: relative;
+            display: inline-block;
+            float: left;
+        }
+
+
+    </style>
+    
+    
+    }
+<div class="frm-wrapper">
+    <h2>@ViewBag.Title</h2>
+    <div class="form-horizontal">
+        <div class="frm-inner">
+            <div class="ticket-header-details">
+                @switch (Model.PriorityID)
+                {
+                    case 1: <div class="priority low"></div>
+                        break;
+                    case 2: <div class="priority medium"></div>
+                        break;
+                    case 3: <div class="priority high"></div>
+                        break;
+                    default:   <div class="priority very-high-outer">
+                    <div class="priority-very-high"></div>
+                </div>
+                        break;
+                }
+                <h3>@Html.DisplayFor(x => x.TicketSubject)</h3>
+            </div>
+            <div class="ticket-body-details">
+                @if (Model.TSTEmployee1 != null)
+            {
+                    <div class="col-md-4 submitted-emp">
+                        <p>Submitted by</p>
+                        <a href ="@Url.Action("Details", "TSTEmployees", new { id = Model.TSTEmployee.EmpID})" class="sub-name">@Html.DisplayFor(x => x.TSTEmployee.GetFullName)</a>
+                        <a href="@Url.Action("Details", "TSTEmployees", new { id = Model.TSTEmployee.EmpID})">
+                            <img class="tick-det-emp" src="~/Content/TSTUserImages/@Model.TSTEmployee.EmpPhoto" />
+                        </a>
+                        <p class="date-details">@Html.DisplayFor(x => x.GetDateAndHourSubmitted)</p>
+
+                    </div>
+                    <div class="col-md-4 ticket-details">
+               
+                       <img class="tick-img" id="tick-img" src="~/Content/TSTTickets/@Model.Image" />
+                        @if (Request.IsAuthenticated)
+                        {
+
+                            if (User.IsInRole("Admin") || User.IsInRole("Tech") || Model.SubmittedByID == e.EmpID)
+                            {
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#imageModal">Change Picture?</button>
+                            }
+                        }
+                        else { }
+                        <p>@Html.DisplayFor(x => x.TicketDescription)</p>
+                    </div>
+                    <div class="col-md-4 assigned-tech">
+                        @switch (Model.TicketStatusID)
+                        {
+                        case 2:
+                        //move it to in progress status
+                        <p>Assigned to</p>
+                                break;
+                            case 3:
+                                //resolve the ticket
+                                <p>Being Worked By</p>
+                                break;
+                            case 4:
+                                //reopen ticket
+                                <p>Resolved by</p>
+                                break;
+                            default:
+                                break;
+                        }
+                        <a href="@Url.Action("Details", "TSTEmployees", new { id = Model.TSTEmployee1.EmpID})" class="sub-name">@Html.DisplayFor(x => x.TSTEmployee1.GetFullName)</a>
+                        <a href="@Url.Action("Details", "TSTEmployees", new { id = Model.TSTEmployee1.EmpID})">
+                            <img class="tick-det-emp" src="~/Content/TSTUserImages/@Model.TSTEmployee1.EmpPhoto" />
+                        </a>
+                        @if (Model.TicketStatusID == 4)
+                        {
+                            <p class="date-details">@Html.DisplayFor(x => x.GetDateAndHourResolved)</p>
+                        }
+                    </div>
+
+
+                }
+                else
+                {
+                    <div class="col-md-6 submitted-emp">
+                        <p>Submitted by</p>
+                        <a href="@Url.Action("Details", "TSTEmployees", new { id = Model.TSTEmployee.EmpID})" class="sub-name">@Html.DisplayFor(x => x.TSTEmployee.GetFullName)</a>
+                        <br />
+                        <a href="@Url.Action("Details", "TSTEmployees", new { id = Model.TSTEmployee.EmpID})">
+                            <img class="tick-det-emp" style="width: 225px;" src="~/Content/TSTUserImages/@Model.TSTEmployee.EmpPhoto" />
+                        </a>
+                        <p class="date-details">@Html.DisplayFor(x => x.GetDateAndHourSubmitted)</p>
+
+                    </div>
+                    <div class="col-md-6 ticket-details unassigned">
+                        <p>Current Status: <strong>@Html.DisplayFor(x => x.TSTTicketStatus.TicketStatusName)</strong></p>
+
+                        <img class="tick-img" id="tick-img" src="~/Content/TSTTickets/@Model.Image" />
+                        <br />
+                        @if (Request.IsAuthenticated)
+                        {
+                            if (User.IsInRole("Admin") || User.IsInRole("Tech") || Model.SubmittedByID == e.EmpID)
+                            {
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#imageModal">Change Picture?</button>
+
+                            }
+                        }
+                        else { }
+                        <p>@Html.DisplayFor(x => x.TicketDescription)</p>
+                    </div>
+
+                }
+                <div class="clearfix"></div>
+            </div>
+         
+         
+
+
+
+
+
+
+
+
+
+
+
+
+
+            @if (Model.TSTTechNotes.Count() != 0)
+            {
+                <div class="tech-notes">
+                    <h2>Tech Notes</h2>
+                    <div class="col-md-10 col-md-offset-1" id="notes">
+                        @foreach (var note in Model.TSTTechNotes)
+                        {
+                            <div class="col-md-10 tech-note">
+                                <p class="tech-note-note">
+                                    @note.Notation
+                                </p>
+                                <p class="tech-note-date">
+                                    @string.Format("{0:g}", note.NotationDate)
+                                </p>
+                            </div>
+                            <div class="col-md-2 tech-note-tech">
+                                <img class="tech-note-tech-img" src="~/Content/TSTUserImages/@note.TSTEmployee.EmpPhoto" />
+                            </div>
+
+
+
+
+                        }
+
+                    </div>
+
+
+
+                    <div class="clearfix"></div>
+                </div>
+            }
+
+          
+            <div class="form-group tick-footer">
+
+                @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-primary" })
+                @if (Request.IsAuthenticated)
+                {
+
+                    if (User.IsInRole("Admin") || User.IsInRole("Tech"))
+                    {
+                        switch (Model.TicketStatusID)
+                        {
+                            case 1:
+                                //assign ticket
+                                @Html.ActionLink("Edit", "Edit", new { id = Model.TicketID }, new { @class = "btn btn-primary" })
+                                @Html.ActionLink("Assign", "Delete", new { id = Model.TicketID }, new { @class = "btn btn-primary" })
+
+                                break;
+                            case 2:
+                                //move it to in progress status
+                                @Html.ActionLink("Edit", "Edit", new { id = Model.TicketID }, new { @class = "btn btn-primary" })
+                                @Html.ActionLink("Escalate", "Delete", new { id = Model.TicketID }, new { @class = "btn btn-primary" })
+                                break;
+                            case 3:
+                                //resolve the ticket
+                                @Html.ActionLink("Edit", "Edit", new { id = Model.TicketID }, new { @class = "btn btn-primary" })
+                                @Html.ActionLink("Resolve", "Delete", new { id = Model.TicketID }, new { @class = "btn btn-success" })
+                                break;
+                            case 4:
+                                //reopen ticket
+
+                                @Html.ActionLink("Reopen", "Delete", new { id = Model.TicketID }, new { @class = "btn btn-danger" })
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+
+
+
+
+               
+            </div>
+        </div>
+    </div>
+</div>
+ 
+@section modals {
+    <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                @*<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>*@
+                <div class="modal-wrapper">
+                    <div class="modal-body">
+                        <div class="img-wrapper">
+                            <input type="hidden" id="grabPic" name="grabPic" value="@s" />
+                            <div name="ticketImage" id="ticketImage" style="background:url(../../Content/TSTTickets/@s)" />
+                        </div>
+                    </div>
+
+                    <div class="modal-control">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <div class="clearfix"></div>
+                        <div class="modal-button-wrapper">
+                            <div id="modal-buttons" class="modal-control-buttons">
+                                <p id="modal-p-tag">Please upload a Image</p>
+                                <button type="button" id="btnSaveImage" class="btn btn-primary">Save Image</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
 }
 
-<h2>Details</h2>
+@section Scripts { 
+    <script>
+        var cropperOptions = {
+            uploadUrl: "@Url.Action("UploadOriginalImage")",
+            cropUrl: "@Url.Action("CroppedImage")"
 
-<div>
-    <h4>TSTTicket</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.TicketSubject)
-        </dt>
+        }
+        var cropperHeader = new Croppic('ticketImage', cropperOptions);
 
-        <dd>
-            @Html.DisplayFor(model => model.TicketSubject)
-        </dd>
+        $('#imageModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var recipient = button.data('whatever') // Extract info from data-* attributes
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+            var modal = $(this)
 
-        <dt>
-            @Html.DisplayNameFor(model => model.TicketDescription)
-        </dt>
+        })
 
-        <dd>
-            @Html.DisplayFor(model => model.TicketDescription)
-        </dd>
+    </script>
+    
+    <script>
+        $(document).ready(function () {
+            var $box = $("#ticketImage")
+            var $previewPic = $("#ticketImage > div > i").click(function () {
+                $box.css('background-image', "none");
+            })
 
-        <dt>
-            @Html.DisplayNameFor(model => model.TicketSubmitted)
-        </dt>
+            //$box.css('background-image', 'url(../../Content/TSTUserImages/' + $previewPic + ')');
+            console.log();
+        });
 
-        <dd>
-            @Html.DisplayFor(model => model.TicketSubmitted)
-        </dd>
+    </script>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.TicketResolved)
-        </dt>
+    <script>
+        $(document).ready(function () {
+            $(function () {
+                $("#btnSaveImage").click(function () {
 
-        <dd>
-            @Html.DisplayFor(model => model.TicketResolved)
-        </dd>
+                    var img = $("#img").val();
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Image)
-        </dt>
+                    if (img != null) {
 
-        <dd>
-            @Html.DisplayFor(model => model.Image)
-        </dd>
+                        $.ajax({
+                            url: "../../TSTTickets/ChangePhoto?Id=@Model.TicketID&img=" + img,
+                            success: function (data) {
+                                document.getElementById("tick-img").src = "../../Content/TSTTickets/" + data.Image + "?random=" + new Date().getTime();
+                               
+                                $("#modal-p-tag").text("Image saved successfully!");
 
-        <dt>
-            @Html.DisplayNameFor(model => model.TSTEmployee.EmpFname)
-        </dt>
+                            }
+                        });
+                    }
+                    else {
+                        $("#modal-p-tag").text("Please make sure your done cropping!");
+                    }
 
-        <dd>
-            @Html.DisplayFor(model => model.TSTEmployee.EmpFname)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.TSTEmployee1.EmpFname)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TSTEmployee1.EmpFname)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TSTPriorite.PriorityName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TSTPriorite.PriorityName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TSTTicketStatus.TicketStatusName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TSTTicketStatus.TicketStatusName)
-        </dd>
-
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.TicketID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+                });
+            });
+        });
+    </script>
+}

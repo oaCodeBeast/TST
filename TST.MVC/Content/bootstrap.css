@@ -6811,3 +6811,35 @@ td.visible-print {
     display: none !important;
   }
 }
+.collapse {
+  height: auto;
+  width: auto;
+}
+
+.collapse.height {
+  position: relative;
+  height: 0;
+  overflow: hidden;
+  -webkit-transition: height 0.35s ease;
+  -moz-transition: height 0.35s ease;
+  -o-transition: height 0.35s ease;
+  transition: height 0.35s ease;
+}
+
+.collapse.width {
+  position: relative;
+  width: 0;
+  overflow: hidden;
+  -webkit-transition: width 0.35s ease;
+  -moz-transition: width 0.35s ease;
+  -o-transition: width 0.35s ease;
+  transition: width 0.35s ease;
+}
+
+.collapse.in.width {
+  width: auto;
+}
+
+.collapse.in.height {
+  height: auto;
+}

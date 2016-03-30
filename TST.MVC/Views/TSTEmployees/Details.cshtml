@@ -13,6 +13,7 @@
     TSTEmployee e = db.TSTEmployees.FirstOrDefault(x => x.EmpUserID == currentUserId);
     IEnumerable<TSTTicket> z = ViewBag.PassMyTickets;
     var myTickets = z.Where(h => h.SubmittedByID == Model.EmpID).Where(h => h.TicketStatusID != 4);
+    var myTicketsTech = z.Where(h => h.TechID == Model.EmpID).Where(h => h.TicketStatusID != 4);
     //grab list of tickets
 
 
@@ -449,7 +450,56 @@
                 else if (Model.DepartmentID == 3)
                 {
                     //add tickets employee is currently working
+                    if (Request.IsAuthenticated && Model.EmpUserID == currentUserId)
+                {
 
+
+                    if (myTicketsTech.Any<TSTTicket>())
+                    {
+                            <div class="myTicketsWrapper">
+                                <h2 class="text-center">My Assigned Tickets</h2>
+                                <div class="ticket-headers">
+                                    <div class="header-subject"></div>
+                                    <div class="header-description">
+                                    </div>
+                                    <div class="header-tech"></div>
+                                    @foreach (var item in myTicketsTech)
+                                    {
+                                        <div class="ticket-entry row" id="@Html.DisplayFor(modelItem => item.TicketID )">
+                                            <div class="ticket-subject">
+                                                <a href="@Url.Action("Details", "TSTTickets", new { id=item.TicketID })">
+                                                    @Html.DisplayFor(modelItem => item.TicketSubject)
+                                                </a>
+                                            </div>
+                                            <div class="ticket-submitted">
+                                                <div class="ticket-priority">
+
+                                                </div>
+                                                <span class="ticket-status">Current Status: @Html.DisplayFor(modelItem => item.TSTTicketStatus.TicketStatusName)</span>
+
+                                                <span class="ticket-opened">Opened on: @Html.DisplayFor(modelItem => item.TicketSubmitted)</span>
+                                                <div class="clearfix"></div>
+                                            </div>
+
+                                           
+                                                <div class="ticket-tech">
+                                                    <a title="@Html.DisplayFor(modelItem => item.TSTEmployee.EmpFname)" href="@Url.Action("Details",new { id=item.TSTEmployee.EmpID })">
+                                                        <img class="loggedinpic" id="ticketTechImg" src="~/Content/TSTUserImages/@Html.DisplayFor(modelItem => item.TSTEmployee.EmpPhoto)" />
+
+                                                    </a>
+                                                </div>
+                                            
+
+                                            <div class="clearfix"></div>
+                                        </div>
+
+
+
+                                    }
+                                </div>
+                            </div>
+                        }
+                    }
                     //tech view
 
                 }

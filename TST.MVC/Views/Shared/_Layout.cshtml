@@ -7,7 +7,10 @@
 
     //create user employee relationship by matching user id to user id of employee
 
-    TSTEmployee e = db.TSTEmployees.FirstOrDefault(x => x.EmpUserID == currentUserId);}
+    TSTEmployee e = db.TSTEmployees.FirstOrDefault(x => x.EmpUserID == currentUserId);
+    IEnumerable<TSTEmployee> os = db.TSTEmployees.Where(x => x.EmpUserID != currentUserId);
+    
+    }
 
 <!DOCTYPE html>
 <html>
@@ -27,7 +30,10 @@
     @RenderSection("styles", required: false)
 </head>
 <body>
- 
+   
+    
+
+
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -103,11 +109,41 @@
 
 
 
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    
 
                
                 </ul>
                 @Html.Partial("_LoginPartial")
+                <div class="list-for-messenger">
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse" aria-expanded="false" aria-controls="collapseExample">
+                        Messenger
+                    </button>
+                    <div class="people-wrapper" style="width:300px;">
+                        <div class="collapse  height messenger-list" id="collapse">
+                            <h2 style="margin-bottom: 4px;color: #fff;">Messenger</h2>
+                            <div class="well" style="padding: 20px; overflow:hidden; width:260px; height:219px;margin: 20px auto; overflow-y:scroll">
+                                @if (Request.IsAuthenticated)
+                                {
+                                    foreach (var item in os)
+                                    {
+                                        <row>
+                                            <div class="col-md-3">
+                                                <a href="@Url.Action("Details", "TSTEmployees", new { id = item.EmpID })"><img class="loggedinpic" src="~/Content/TSTUserImages/@Html.DisplayFor(x => item.EmpPhoto)" /></a>
+
+                                            </div>
+                                            <div class="col-md-9">
+                                                <a href="@Url.Action("Details", "TSTEmployees",  new { id = item.EmpID })"><p>@Html.DisplayFor(x => item.GetFullName)</p></a>
+
+
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </row>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -120,8 +156,26 @@
     </div>
     @RenderSection("modals", required: false)
     @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+        @Scripts.Render("~/bundles/bootstrap")
+        <script src="~/Scripts/jquery.signalR-2.2.0.js"></script>
+        <script src="~/signalr/hubs"></script>
+    <script>
+        $(function () {
 
+            //reference the hub
+            var chatHub = $.connection.chatHub;
+
+            registerClientMethods(chatHub);
+
+            $.connection.hub.start().done(function () {
+                registerEvents(chatHub)
+            });
+
+
+
+
+        });
+    </script>
      @RenderSection("scripts", required: false)
 </body>
 </html>

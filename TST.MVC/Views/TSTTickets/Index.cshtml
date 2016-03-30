@@ -94,10 +94,10 @@ var resolvedTickets = Model.Where(t => t.TicketStatusID == 4).OrderBy(t => t.Tic
                 {
                                 <div class="col-md-6 sub-emp">
                                     <p>Submitted By</p>
-                                    <a href="@Url.Action("Details", new { id = item.TSTEmployee.EmpID })">
+                                    <a href="@Url.Action("Details","TSTEmployees", new { id = item.TSTEmployee.EmpID })">
                                         <img class="img-circle ticket-emp-img" src="~/Content/TSTUserImages/@Html.DisplayFor(modelItem => item.TSTEmployee.EmpPhoto)" />
                                     </a>
-                                    <a href="@Url.Action("Details", new { id = item.TSTEmployee.EmpID })">
+                                    <a href="@Url.Action("Details","TSTEmployees", new { id = item.TSTEmployee.EmpID })">
                                         <h4>@Html.DisplayFor(modelItem => item.TSTEmployee.EmpFname)</h4>
                                     </a>
                                     <p>@Html.DisplayFor(modelItem => item.GetDateAndHourSubmitted)</p>
@@ -118,10 +118,10 @@ var resolvedTickets = Model.Where(t => t.TicketStatusID == 4).OrderBy(t => t.Tic
                                             break;
                                     }
 
-                                    <a href="@Url.Action("Details", new { id = item.TSTEmployee1.EmpID })">
+                                    <a href="@Url.Action("Details", "TSTEmployees", new { id = item.TSTEmployee1.EmpID })">
                                         <img class="img-circle ticket-emp-img" src="~/Content/TSTUserImages/@Html.DisplayFor(modelItem => item.TSTEmployee1.EmpPhoto)" />
                                     </a>
-                                    <a href="@Url.Action("Details", new { id = item.TSTEmployee1 })">
+                                    <a href="@Url.Action("Details", "TSTEmployees", new { id = item.TSTEmployee1 })">
                                         <h4>@Html.DisplayFor(modelItem => item.TSTEmployee1.EmpFname)</h4>
                                     </a>
 
@@ -139,10 +139,10 @@ var resolvedTickets = Model.Where(t => t.TicketStatusID == 4).OrderBy(t => t.Tic
                             {
                                 <div class="col-md-12 sub-emp">
                                     <p>Submitted By</p>
-                                    <a href="@Url.Action("Details", new { id = item.TSTEmployee.EmpID })">
+                                    <a href="@Url.Action("Details", "TSTEmployees", new { id = item.TSTEmployee.EmpID })">
                                         <img class="img-circle ticket-emp-img" src="~/Content/TSTUserImages/@Html.DisplayFor(modelItem => item.TSTEmployee.EmpPhoto)" />
                                     </a>
-                                    <a href="@Url.Action("Details", new { id = item.TSTEmployee.EmpID })">
+                                    <a href="@Url.Action("Details", "TSTEmployees", new { id = item.TSTEmployee.EmpID })">
                                         <h4>@Html.DisplayFor(modelItem => item.TSTEmployee.EmpFname)</h4>
                                     </a>
                                     <p>@Html.DisplayFor(modelItem => item.GetDateAndHourSubmitted)</p>
@@ -225,10 +225,10 @@ var resolvedTickets = Model.Where(t => t.TicketStatusID == 4).OrderBy(t => t.Tic
                 {
                             <div class="col-md-6 sub-emp">
                                 <p>Submitted By</p>
-                                <a href="@Url.Action("Details", new { id = item.TSTEmployee.EmpID })">
+                                <a href="@Url.Action("Details", "TSTEmployees", new { id = item.TSTEmployee.EmpID })">
                                     <img class="img-circle ticket-emp-img" src="~/Content/TSTUserImages/@Html.DisplayFor(modelItem => item.TSTEmployee.EmpPhoto)" />
                                 </a>
-                                <a href="@Url.Action("Details", new { id = item.TSTEmployee.EmpID })">
+                                <a href="@Url.Action("Details", "TSTEmployees", new { id = item.TSTEmployee.EmpID })">
                                     <h4>@Html.DisplayFor(modelItem => item.TSTEmployee.EmpFname)</h4>
                                 </a>
                                 <p>@Html.DisplayFor(modelItem => item.GetDateAndHourSubmitted)</p>
@@ -249,10 +249,10 @@ var resolvedTickets = Model.Where(t => t.TicketStatusID == 4).OrderBy(t => t.Tic
                                             break;
                                     }
 
-                                <a href="@Url.Action("Details", new { id = item.TSTEmployee1.EmpID })">
+                                <a href="@Url.Action("Details", "TSTEmployees", new { id = item.TSTEmployee1.EmpID })">
                                     <img class="img-circle ticket-emp-img" src="~/Content/TSTUserImages/@Html.DisplayFor(modelItem => item.TSTEmployee1.EmpPhoto)" />
                                 </a>
-                                <a href="@Url.Action("Details", new { id = item.TSTEmployee1 })">
+                                <a href="@Url.Action("Details", "TSTEmployees", new { id = item.TSTEmployee1 })">
                                     <h4>@Html.DisplayFor(modelItem => item.TSTEmployee1.EmpFname)</h4>
                                 </a>
 
@@ -270,10 +270,10 @@ var resolvedTickets = Model.Where(t => t.TicketStatusID == 4).OrderBy(t => t.Tic
                             {
                             <div class="col-md-12 sub-emp">
                                 <p>Submitted By</p>
-                                <a href="@Url.Action("Details", new { id = item.TSTEmployee.EmpID })">
+                                <a href="@Url.Action("Details", "TSTEmployees", new { id = item.TSTEmployee.EmpID })">
                                     <img class="img-circle ticket-emp-img" src="~/Content/TSTUserImages/@Html.DisplayFor(modelItem => item.TSTEmployee.EmpPhoto)" />
                                 </a>
-                                <a href="@Url.Action("Details", new { id = item.TSTEmployee.EmpID })">
+                                <a href="@Url.Action("Details",  "TSTEmployees", new { id = item.TSTEmployee.EmpID })">
                                     <h4>@Html.DisplayFor(modelItem => item.TSTEmployee.EmpFname)</h4>
                                 </a>
                                 <p>@Html.DisplayFor(modelItem => item.GetDateAndHourSubmitted)</p>

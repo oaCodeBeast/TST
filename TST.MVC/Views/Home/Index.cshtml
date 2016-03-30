@@ -26,7 +26,7 @@
     <div class="clearfix"></div>
 </div>
 <div class="home-image">
-    <div class="second-nav">
+    @*<div class="second-nav">
         <ul>
             <li><a href="#">Example Replace later</a></li>
             <li><a href="#">Example Replace later</a></li>
@@ -34,9 +34,9 @@
             <li><a href="#">Example Replace later</a></li>
             <li><a href="#">Example Replace later</a></li>
         </ul>
-    </div>
-
-    <div class="container clearfix image-text">
+    </div>*@
+    <div></div>
+    <div class="container image-text">
         <div class="title">
             <a href="#">
                Enrollments open now!
@@ -46,17 +46,87 @@
 </div>
 <div class="documentation container">
     <article class="col-md-4">
-        <h2>What you can do</h2>
-        <p>Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here</p>
-    </article>
-    <article class="col-md-4">
-        <h2>Available courses</h2>
-        <p>Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here</p>
-    </article>
-    <article class="col-md-4">
-        <h2>Current Ticket Count</h2>
-        <p>Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here Documentation here</p>
-    </article>
+        
+            <h2>Project Requirements:</h2>
     
+            <h4>Manage Departments</h4>
+            <ul>
+                <li>Only available to admins</li>
+                <li>Index view should show all departments</li>
+                <li>CRUD functionality (Soft Delete)</li>
+                <li>Upon inserting or editing the department, they are taken to the index view with all departments</li>
+            </ul>
+
+           
+  
+            <h4>Manage Employees:</h4>
+            <ul>
+                <li>only available to admin users</li>
+                <li>index view should be set to only active employees, but be filterable to inactive
+
+employees</li>
+                <li>CRUD functionality (Soft Delete)</li>
+                <li>Upon inserting or editing the employee they are taken to the index view with all open
+
+employees</li>
+            </ul>    
+
+
+
+
+      </article>
+    <article class="col-md-4">
+
+        <h4 style="margin-top: 61px;">Support Tickets:</h4>
+        <ul>
+            <li>index view should be set to only “open” (pending &amp; In Process) requests</li>
+            <li>Anonymous users can only view master-detail read-only mode</li>
+            <li>If logged in, can insert new request (but may not edit)</li>
+            <li>
+                Authenticated users should be able to filter between either Open (Pending or In
+
+                Process) and Resolved Requests
+            </li>
+            <li>
+                If logged in as an Administrator (Techs should all be in Admin role) should be able to
+
+                access edit functionality in detail view and toggle status between Resolved and In
+
+                Process from master view
+            </li>
+            <li>
+                Upon completing the new request (or clicking button to see Open requests) they are
+
+                taken to the master view with all open requests
+            </li>
+            <li>CRUD functionality (Soft Delete)</li>
+
+        </ul>
+
+    </article>
+    <article class="col-md-4">
+        <h2>Additional Functionality</h2>
+        <h4>Users</h4>
+        <ul>
+            <li>Employees can resign</li>
+            <li>Students can drop out and re-enroll</li>
+            <li>User Photo is set independently via an ajax call</li>
+            <li>User Photo is able to be cropped and previewed</li>
+            <li>Users have the tickets they have submitted in their details view when logged in</li>
+            <li>Techs can view their assigned tickets in details view</li>
+            <li>Tons of logic to change the displays of all views</li>
+            <li>Programmatically assigning all possible fields</li>
+
+        </ul>
+        <h4>Tickets</h4>
+        <ul>
+            <li>Tickets can be escalated through the status via index</li>
+            <li>Tickets have an independent image upload with crop functionality</li>
+            <li>Tons of logic to change the displays of all views</li>
+            <li>Programmatically assigning all fields</li>
+
+
+        </ul>
+    </article>
     <div class="clearfix"></div>
 </div>

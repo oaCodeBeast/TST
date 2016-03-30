@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace IdentitySample.Controllers
 {
@@ -67,6 +68,7 @@ namespace IdentitySample.Controllers
         {
             if (!ModelState.IsValid)
             {
+              
                 return View(model);
             }
 
@@ -76,6 +78,7 @@ namespace IdentitySample.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+                    FormsAuthentication.SetAuthCookie(model.Email, true);
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -384,6 +387,7 @@ namespace IdentitySample.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
+            FormsAuthentication.SignOut();
             AuthenticationManager.SignOut();
             return RedirectToAction("Index", "Home");
         }

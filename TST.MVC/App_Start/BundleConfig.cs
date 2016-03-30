@@ -22,7 +22,7 @@ namespace IdentitySample
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js",
                       "~/Scripts/jquery-ui-1.11.4.js",
-                      "~/Scripts/croppic.js",
+                      "~/Scripts/croppic.js",            
                       "~/Scripts/main.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
