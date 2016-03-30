@@ -1,4 +1,6 @@
-﻿using Owin;
+﻿
+
+using Owin;
 
 namespace IdentitySample
 {
@@ -6,6 +8,7 @@ namespace IdentitySample
     {
         public void Configuration(IAppBuilder app)
         {
+          
             ConfigureAuth(app);
             app.MapSignalR();
         }

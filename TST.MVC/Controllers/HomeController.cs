@@ -1,7 +1,9 @@
 ﻿using System.Web.Mvc;
 
+
 namespace IdentitySample.Controllers
 {
+   
     public class HomeController : Controller
     {
         public ActionResult Index()
@@ -16,7 +18,7 @@ namespace IdentitySample.Controllers
 
             return View();
         }
-
+     
       
     }
 }
